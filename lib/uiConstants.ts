@@ -30,6 +30,7 @@ export const UI = {
         default: '#000000',
         about: '#005b6f',
         product: '#2a0057',
+        works: '#4b0082',
         contact: '#003c69',
         OVERLAY_ALPHA: 0.55,
     },

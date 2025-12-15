@@ -22,6 +22,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'About', href: '/about', icon: Info },
+  { label: 'Works', href: '/works', icon: Package },
   { label: 'Product', href: '/product', icon: Package },
   { label: 'Contact', href: '/contact', icon: Mail },
 ];
@@ -37,17 +38,17 @@ export default function Navigation() {
     setIsTransitioning(true);
 
     // 테마 색상 결정
-    const themeHex = 
+    const themeHex =
       href === '/' ? UI.THEME.default :
-      href === '/about' ? UI.THEME.about :
-      href === '/product' ? UI.THEME.product :
-      href === '/contact' ? UI.THEME.contact :
-      UI.THEME.default;
+        href === '/about' ? UI.THEME.about :
+          href === '/product' ? UI.THEME.product :
+            href === '/contact' ? UI.THEME.contact :
+              UI.THEME.default;
 
     try {
       // 1) 부드러운 FOV 변화 (더 긴 지속시간)
       springCameraFov(UI.WORMHOLE.fovFar);
-      
+
       // 2) 점진적 배경 색상 전환
       starfieldBackground.set(themeHex, UI.WORMHOLE.duration * 1500);
 
@@ -91,7 +92,7 @@ export default function Navigation() {
     ">
       {/* Logo/Brand - Left */}
       <div className="flex-shrink-0">
-        <button 
+        <button
           onClick={() => navigateWithEffect('/')}
           className="
             flex items-center justify-start gap-2 
@@ -119,7 +120,7 @@ export default function Navigation() {
         {navItems.map((item) => {
           const isActive = router.pathname === item.href;
           const Icon = item.icon;
-          
+
           return (
             <button
               key={item.href}
@@ -130,23 +131,23 @@ export default function Navigation() {
                 rounded-full text-sm font-medium border-none outline-none
                 transition-all duration-300 cursor-pointer
                 transform hover:scale-105 active:scale-95
-                ${isActive 
-                  ? 'bg-white/20 text-white shadow-lg ring-2 ring-white/10' 
+                ${isActive
+                  ? 'bg-white/20 text-white shadow-lg ring-2 ring-white/10'
                   : 'text-white/90 hover:text-white hover:bg-white/15 hover:shadow-md'
                 }
-                ${isTransitioning 
-                  ? 'opacity-50 cursor-not-allowed scale-95' 
+                ${isTransitioning
+                  ? 'opacity-50 cursor-not-allowed scale-95'
                   : 'opacity-100'
                 }
                 sm:justify-start
               `}
             >
-              <Icon 
-                size={16} 
+              <Icon
+                size={16}
                 className={`
                   md:size-4 mx-auto sm:mx-0 transition-transform duration-300
                   ${isTransitioning ? 'animate-pulse' : ''}
-                `} 
+                `}
               />
               <span className="hidden sm:inline">{item.label}</span>
             </button>

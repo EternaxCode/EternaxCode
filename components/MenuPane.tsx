@@ -2,7 +2,7 @@ import GlassPane from '@/components/GlassPane';
 import Icon from '@/components/Icon';
 
 interface MenuPaneProps {
-    label: 'About' | 'Product' | 'Contact';
+    label: 'About' | 'Product' | 'Contact' | 'Works';
     route: string;
     icon?: string;                // 아이콘 이름(이미지 파일 접두사)
     index: number;
