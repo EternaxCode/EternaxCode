@@ -29,16 +29,17 @@ const Starfield = dynamic(
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  const themeByPath: Record<string, string | undefined> = {
-    '/': UI.THEME.default,
-    '/about': UI.THEME.about,
-    '/product': UI.THEME.product,
-    '/works': UI.THEME.works,
-    '/contact': UI.THEME.contact,
+  const getThemeForPath = (pathname: string): string => {
+    if (pathname === '/') return UI.THEME.default;
+    if (pathname.startsWith('/about')) return UI.THEME.about;
+    if (pathname.startsWith('/product')) return UI.THEME.product;
+    if (pathname.startsWith('/works')) return UI.THEME.works;
+    if (pathname.startsWith('/contact')) return UI.THEME.contact;
+    return UI.THEME.default;
   };
 
   useEffect(() => {
-    const themeHex = themeByPath[router.pathname] ?? UI.THEME.default;
+    const themeHex = getThemeForPath(router.pathname);
     const isHome = router.pathname === '/';
 
     /* 카메라가 준비된 뒤에만 clearColor 적용 */
@@ -84,7 +85,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       {/* 메인 콘텐츠 영역 */}
       <AnimatePresence mode="wait">
         <motion.main
-          key={router.pathname}
+          key={router.asPath}
           initial={{
             opacity: 0,
             y: 20,

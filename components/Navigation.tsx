@@ -118,7 +118,9 @@ export default function Navigation() {
       {/* Navigation Links - Center */}
       <div className="flex items-center gap-1 md:gap-2 absolute left-1/2 transform -translate-x-1/2">
         {navItems.map((item) => {
-          const isActive = router.pathname === item.href;
+          const isActive =
+            router.asPath === item.href ||
+            (item.href !== '/' && router.asPath.startsWith(item.href));
           const Icon = item.icon;
 
           return (

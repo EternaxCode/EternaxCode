@@ -1,53 +1,46 @@
-
 import Head from 'next/head';
-import Link from 'next/link';
+import { Package } from 'lucide-react';
+import StaggerContainer, { StaggerItem } from '@/components/StaggerContainer';
+import WorkCard from '@/components/WorkCard';
+import { worksData } from '@/lib/worksData';
 
 export default function Works() {
-    return (
-        <>
-            <Head>
-                <title>Works - EternaxCode</title>
-            </Head>
+  return (
+    <>
+      <Head>
+        <title>Works - EternaxCode</title>
+        <meta
+          name="description"
+          content="Explore projects built by EternaxCode — from branded web experiences to AI-powered platforms."
+        />
+      </Head>
 
-            <div className="min-h-screen w-full flex flex-col items-center justify-center p-8 pt-24 text-white">
-
-                <h1 className="text-4xl md:text-5xl font-light mb-12 tracking-wide text-center">
-                    Selected Works
-                </h1>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
-                    {/* Project Card: ddubakehouse */}
-                    <a
-                        href="https://ddubakehouse.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative flex flex-col overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-300 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(75,0,130,0.3)]"
-                    >
-                        <div className="aspect-video w-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
-                            {/* Placeholder or Image. Since we don't have an image yet, use a nice gradient or text */}
-                            <span className="text-2xl font-bold opacity-30 group-hover:opacity-100 transition-opacity">ddubakehouse</span>
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                        </div>
-
-                        <div className="p-6">
-                            <h2 className="text-2xl font-semibold mb-2 text-white/90 group-hover:text-white">ddubakehouse.com</h2>
-                            <p className="text-sm text-gray-300 mb-4 line-clamp-2">
-                                A web experience for Ddu Bakehouse. Implemented with modern web technologies to capture the brand's unique atmosphere.
-                            </p>
-                            <div className="flex gap-2 text-xs font-mono text-white/50">
-                                <span className="bg-white/10 px-2 py-1 rounded">Web</span>
-                                <span className="bg-white/10 px-2 py-1 rounded">Branding</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    {/* Placeholder for future works */}
-                    <div className="group relative flex flex-col items-center justify-center rounded-2xl bg-white/5 border border-white/5 border-dashed min-h-[300px] text-white/20">
-                        <span className="text-sm">More coming soon...</span>
-                    </div>
-
-                </div>
+      <div className="min-h-screen w-full flex flex-col items-center p-4 sm:p-8 pt-24 text-white">
+        <StaggerContainer className="w-full max-w-6xl">
+          {/* Header */}
+          <StaggerItem className="text-center mb-10 sm:mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-xs sm:text-sm text-white/80 mb-6">
+              <Package size={14} />
+              Portfolio
             </div>
-        </>
-    );
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Selected Works
+            </h1>
+            <p className="text-sm sm:text-base text-white/60 max-w-xl mx-auto leading-relaxed">
+              A collection of projects we&apos;ve crafted — each built with modern technologies and a focus on great user experience.
+            </p>
+          </StaggerItem>
+
+          {/* Project Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {worksData.map((project) => (
+              <StaggerItem key={project.id}>
+                <WorkCard project={project} />
+              </StaggerItem>
+            ))}
+          </div>
+        </StaggerContainer>
+      </div>
+    </>
+  );
 }
