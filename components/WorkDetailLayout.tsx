@@ -31,7 +31,7 @@ export default function WorkDetailLayout({
   const basePath = `/works/${project.id}`;
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center px-4 sm:px-8 pt-24 pb-32 text-white">
+    <div className="min-h-screen w-full flex flex-col items-center px-4 sm:px-8 pt-24 text-white">
       <div className="w-full max-w-4xl">
         {/* Back link */}
         <Link

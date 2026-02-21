@@ -110,7 +110,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             opacity: { duration: 0.4 },
             filter: { duration: 0.3 }
           }}
-          className="min-h-screen"
+          className="min-h-screen pb-20"
         >
           <Component {...pageProps} />
         </motion.main>
