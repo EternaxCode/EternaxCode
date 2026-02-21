@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Home, Info, Package, Mail } from 'lucide-react';
+import RaxiIcon from '@/components/icons/RaxiIcon';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import { UI } from '@/lib/uiConstants';
@@ -23,7 +24,7 @@ const navItems: NavItem[] = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'About', href: '/about', icon: Info },
   { label: 'Works', href: '/works', icon: Package },
-  { label: 'Product', href: '/product', icon: Package },
+  { label: 'Product', href: '/product', icon: RaxiIcon },
   { label: 'Contact', href: '/contact', icon: Mail },
 ];
 

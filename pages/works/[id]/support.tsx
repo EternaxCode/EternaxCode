@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { ChevronDown, Mail } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronDown, Mail, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import StaggerContainer, { StaggerItem } from '@/components/StaggerContainer';
@@ -79,23 +80,39 @@ export default function WorkSupport({ project }: Props) {
             ))}
           </div>
 
-          {/* Contact card */}
-          <StaggerItem>
-            <div className="rounded-2xl bg-white/5 border border-white/10 p-6 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                <Mail size={18} className="text-white/70" />
+          {/* Contact & Privacy */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <StaggerItem>
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-6 flex items-center gap-4 h-full">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <Mail size={18} className="text-white/70" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/60 mb-1">Still need help?</p>
+                  <a
+                    href={`mailto:${support.contactEmail}`}
+                    className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+                  >
+                    {support.contactEmail}
+                  </a>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-white/60 mb-1">Still need help?</p>
-                <a
-                  href={`mailto:${support.contactEmail}`}
-                  className="text-sm font-medium text-white/90 hover:text-white transition-colors"
-                >
-                  {support.contactEmail}
-                </a>
-              </div>
-            </div>
-          </StaggerItem>
+            </StaggerItem>
+            <StaggerItem>
+              <Link
+                href={`/works/${project.id}/privacy`}
+                className="rounded-2xl bg-white/5 border border-white/10 p-6 flex items-center gap-4 h-full hover:bg-white/10 hover:border-white/20 transition-all duration-200 block"
+              >
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <Shield size={18} className="text-white/70" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/60 mb-1">Legal</p>
+                  <span className="text-sm font-medium text-white/90">Privacy Policy</span>
+                </div>
+              </Link>
+            </StaggerItem>
+          </div>
         </StaggerContainer>
       </WorkDetailLayout>
     </>

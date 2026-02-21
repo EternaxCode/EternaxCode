@@ -57,12 +57,12 @@ export default function Contact() {
                 Send us a message
               </h2>
               <p className="text-white/70 text-sm mb-4">
-                Messages will be sent directly to <span className="text-blue-300 font-medium">support@eternaxcode.com</span>
+                Messages will be sent directly to <span className="text-blue-300 font-medium">eternaxcode@gmail.com</span>
               </p>
               
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                 {/* Hidden field for destination email */}
-                <input type="hidden" name="to_email" value="support@eternaxcode.com" />
+                <input type="hidden" name="to_email" value="eternaxcode@gmail.com" />
                 
                 <div>
                   <label htmlFor="from_name" className="block text-sm font-medium text-white mb-2">
@@ -152,25 +152,25 @@ export default function Contact() {
             {/* Contact Info */}
             <div className="space-y-4">
               <ContactCard
-                icon={<Mail size={24} />}
+                icon={<Mail size={20} />}
                 title="Email Us"
-                description="support@eternaxcode.com"
+                description="eternaxcode@gmail.com"
               />
               <ContactCard
-                icon={<MessageSquare size={24} />}
+                icon={<MessageSquare size={20} />}
                 title="RAXI Engine Inquiries"
                 description="For partnership and enterprise discussions"
               />
               <ContactCard
-                icon={<Calendar size={24} />}
+                icon={<Calendar size={20} />}
                 title="Development Updates"
                 description="Follow our progress and announcements"
               />
-              
+
               <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
-                <h3 className="text-md font-bold text-white mb-2">Note</h3>
-                <p className="text-white/70 text-sm leading-relaxed">
-                  RAXI Engine is currently in internal development phase. We're actively working on making it available for enterprise partners. 
+                <h3 className="text-sm font-bold text-white mb-1">Note</h3>
+                <p className="text-white/70 text-xs leading-relaxed">
+                  RAXI Engine is currently in internal development phase. We're actively working on making it available for enterprise partners.
                   Reach out to learn more about our progress and future plans.
                 </p>
               </div>
@@ -188,12 +188,14 @@ function ContactCard({ icon, title, description }: {
   description: string;
 }) {
   return (
-    <div className="bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer">
-      <div className="text-blue-300 mb-3 flex justify-center">
+    <div className="bg-white/10 rounded-2xl p-4 border border-white/20 hover:bg-white/15 transition-all duration-300 flex items-center gap-4">
+      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 text-blue-300">
         {icon}
       </div>
-      <h3 className="text-md font-bold text-white mb-2">{title}</h3>
-      <p className="text-white/70 text-sm">{description}</p>
+      <div>
+        <h3 className="text-sm font-bold text-white">{title}</h3>
+        <p className="text-white/60 text-xs">{description}</p>
+      </div>
     </div>
   );
 }

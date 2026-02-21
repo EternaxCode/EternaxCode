@@ -14,6 +14,17 @@ export interface SupportContent {
   contactEmail: string;
 }
 
+export interface PrivacySection {
+  title: string;
+  content: string;
+}
+
+export interface PrivacyContent {
+  effectiveDate: string;
+  introduction: string;
+  sections: PrivacySection[];
+}
+
 export interface MarketingContent {
   headline: string;
   subheadline: string;
@@ -47,6 +58,7 @@ export interface AppProject extends WorkProjectBase {
   spec: SpecContent;
   support: SupportContent;
   marketing: MarketingContent;
+  privacy: PrivacyContent;
 }
 
 export type WorkProject = WebProject | AppProject;
@@ -187,6 +199,58 @@ export const worksData: WorkProject[] = [
       ],
       ctaText: 'Download on the App Store',
       ctaUrl: '#',
+    },
+    privacy: {
+      effectiveDate: '2025-02-21',
+      introduction:
+        'EternaxCode ("we", "us", or "our") operates the Memoire application. This Privacy Policy explains how we collect, use, and protect your information when you use our app.',
+      sections: [
+        {
+          title: '1. Information We Collect',
+          content:
+            'Memoire is designed with a local-first architecture. Your diary entries, photos, and personal data are stored locally on your device. We collect the following information only when you opt in to specific features:\n\n• Account Information: When you sign in with Google or Apple, we receive your name, email address, and profile photo to create your account.\n• Diary Data (Cloud Sync only): If you enable cloud sync, your diary entries and attached photos are uploaded to your personal iCloud (iOS) or Google Drive (Android) storage. This data is stored in your own cloud account, not on our servers.\n• Usage Analytics: We use Firebase Analytics to collect anonymous usage data (e.g., feature usage frequency, crash reports) to improve the app. No personal diary content is included in analytics.',
+        },
+        {
+          title: '2. How We Use Your Information',
+          content:
+            '• To provide and maintain the app\'s core functionality\n• To sync your data across your devices via iCloud or Google Drive\n• To process in-app purchases for premium themes\n• To send daily reminder notifications (if enabled by you)\n• To improve app performance and fix bugs through anonymous analytics',
+        },
+        {
+          title: '3. Data Storage & Security',
+          content:
+            '• Local Storage: All diary entries are stored in an encrypted SQLite database on your device.\n• Cloud Storage: When sync is enabled, data is stored in your personal iCloud or Google Drive account, protected by their respective security measures.\n• Authentication: We use Firebase Authentication with OAuth 2.0 (Google Sign-In, Apple Sign-In) for secure account access.\n• We do not store your diary content, photos, or personal entries on our servers.',
+        },
+        {
+          title: '4. Third-Party Services',
+          content:
+            'Memoire uses the following third-party services:\n\n• Firebase (Google): Authentication, analytics, and user profile management\n• Apple iCloud: Cloud sync for iOS users\n• Google Drive: Cloud sync for Android users\n\nEach service has its own privacy policy. We encourage you to review them.',
+        },
+        {
+          title: '5. Permissions',
+          content:
+            '• Camera: To take photos directly for diary entries\n• Photo Library: To select existing photos for diary entries\n• Notifications: To send daily writing reminders (optional)\n• Internet: To sync data and authenticate your account',
+        },
+        {
+          title: '6. Data Retention & Deletion',
+          content:
+            'Your diary data remains on your device and in your cloud storage as long as you choose to keep it. You can delete individual entries at any time within the app. To delete your account and all associated data, go to Settings > Account > Delete Account. Cloud-synced data can be removed from your iCloud or Google Drive settings.',
+        },
+        {
+          title: '7. Children\'s Privacy',
+          content:
+            'Memoire is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.',
+        },
+        {
+          title: '8. Changes to This Policy',
+          content:
+            'We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy within the app and updating the effective date.',
+        },
+        {
+          title: '9. Contact Us',
+          content:
+            'If you have any questions about this Privacy Policy, please contact us at eternaxcode@gmail.com.',
+        },
+      ],
     },
   },
 ];
