@@ -143,34 +143,6 @@ export default function SectionScroll({ children, className = '' }: SectionScrol
         ))}
       </motion.div>
 
-      {/* 섹션 인디케이터 - 모바일에서는 하단 중앙, 데스크톱에서는 우측 */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-30 space-y-3 md:right-6 
-                      sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2 sm:space-y-3 sm:space-x-0
-                      max-sm:right-auto max-sm:left-1/2 max-sm:top-auto max-sm:bottom-20 max-sm:transform max-sm:-translate-x-1/2 max-sm:translate-y-0 max-sm:flex max-sm:flex-row max-sm:space-y-0 max-sm:space-x-3">
-        {children.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              if (!isScrolling) {
-                setCurrentSection(index);
-                setIsScrolling(true);
-                setTimeout(() => setIsScrolling(false), 800);
-              }
-            }}
-            className={`
-              w-3 h-3 rounded-full border-2 border-white/30 
-              transition-all duration-300 cursor-pointer
-              hover:scale-125
-              ${currentSection === index 
-                ? 'bg-white border-white shadow-lg' 
-                : 'bg-transparent hover:bg-white/20'
-              }
-            `}
-            title={`섹션 ${index + 1}`}
-          />
-        ))}
-      </div>
-
       {/* 스크롤 힌트 (첫 번째 섹션에서만) */}
       {currentSection === 0 && (
         <motion.div
