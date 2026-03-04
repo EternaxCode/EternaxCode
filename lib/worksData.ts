@@ -201,7 +201,7 @@ export const worksData: WorkProject[] = [
       ctaUrl: '#',
     },
     privacy: {
-      effectiveDate: '2025-02-21',
+      effectiveDate: '2026-03-04',
       introduction:
         'EternaxCode ("we", "us", or "our") operates the Memoire application. This Privacy Policy explains how we collect, use, and protect your information when you use our app.',
       sections: [
