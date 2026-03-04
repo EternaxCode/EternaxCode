@@ -3,27 +3,49 @@ import { Mail, MessageSquare, Calendar, Send } from 'lucide-react';
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      reset: () => void;
+      getResponse: () => string;
+    };
+    onRecaptchaChange: (token: string) => void;
+    onRecaptchaExpired: () => void;
+  }
+}
+
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
+
+  // reCAPTCHA 콜백을 window에 등록
+  if (typeof window !== 'undefined') {
+    window.onRecaptchaChange = (token: string) => setRecaptchaToken(token);
+    window.onRecaptchaExpired = () => setRecaptchaToken('');
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
 
+    if (!recaptchaToken) {
+      setSubmitMessage('Please complete the reCAPTCHA verification.');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitMessage('');
 
     try {
-      // EmailJS 설정
       await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
         formRef.current,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
       );
-      
+
       setSubmitMessage('Message sent successfully! We\'ll get back to you soon.');
       formRef.current.reset();
     } catch (error) {
@@ -31,6 +53,10 @@ export default function Contact() {
       console.error('Email sending failed:', error);
     } finally {
       setIsSubmitting(false);
+      setRecaptchaToken('');
+      if (typeof window !== 'undefined' && window.grecaptcha) {
+        window.grecaptcha.reset();
+      }
     }
   };
 
@@ -119,9 +145,17 @@ export default function Contact() {
                   />
                 </div>
 
+                <div
+                  className="g-recaptcha"
+                  data-sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  data-theme="dark"
+                  data-callback="onRecaptchaChange"
+                  data-expired-callback="onRecaptchaExpired"
+                ></div>
+
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !recaptchaToken}
                   className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 disabled:from-gray-500 disabled:to-gray-600 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 disabled:scale-100 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
