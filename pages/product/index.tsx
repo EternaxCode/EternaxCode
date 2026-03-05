@@ -8,11 +8,12 @@ import {
   Activity,
   Layers,
   Binary,
-  Target,
   FlaskConical,
-  Cpu,
-  Shield,
   Gauge,
+  Globe,
+  Smartphone,
+  Server,
+  ArrowRight,
 } from 'lucide-react';
 import SectionScroll from '@/components/SectionScroll';
 import StaggerContainer from '@/components/StaggerContainer';
@@ -120,80 +121,91 @@ export default function Product() {
           </StaggerContainer>
         </section>
 
-        {/* Section 3 - Model Family */}
+        {/* Section 3 - Vision */}
         <section>
           <StaggerContainer className="max-w-6xl mx-auto px-4" delay={0.2}>
             <StaggerItem>
               <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-white">
-                Model Family
+                Vision
               </h2>
               <p className="text-white/50 text-center mb-12 max-w-2xl mx-auto">
-                Multiple configurations optimized for different deployment scenarios
+                Fully autonomous management across Web, App, and Infrastructure
               </p>
             </StaggerItem>
 
+            {/* 3-layer management */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               {[
                 {
-                  name: 'RAXI Compact',
-                  desc: 'Optimized for edge and low-latency inference',
-                  tag: 'Edge',
-                  icon: Zap,
-                  color: 'text-green-400',
-                  bgColor: 'bg-green-500/20',
+                  title: 'Web',
+                  desc: 'Autonomous deployment, monitoring, content updates, and performance optimization for web products.',
+                  icon: Globe,
+                  color: 'text-blue-400',
+                  bgColor: 'bg-blue-500/20',
                 },
                 {
-                  name: 'RAXI Standard',
-                  desc: 'Balanced performance for general-purpose workloads',
-                  tag: 'General',
-                  icon: Layers,
+                  title: 'App',
+                  desc: 'End-to-end app lifecycle management — from build and release to user feedback analysis and iterative updates.',
+                  icon: Smartphone,
                   color: 'text-purple-400',
                   bgColor: 'bg-purple-500/20',
                 },
                 {
-                  name: 'RAXI Full',
-                  desc: 'Maximum capability for complex reasoning tasks',
-                  tag: 'Performance',
-                  icon: Cpu,
+                  title: 'Infrastructure',
+                  desc: 'Self-healing infrastructure that detects anomalies, scales resources, and resolves incidents without human intervention.',
+                  icon: Server,
                   color: 'text-pink-400',
                   bgColor: 'bg-pink-500/20',
                 },
-              ].map((model) => (
-                <StaggerItem key={model.name}>
+              ].map((item) => (
+                <StaggerItem key={item.title}>
                   <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all h-full">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-10 h-10 rounded-xl ${model.bgColor} flex items-center justify-center`}>
-                        <model.icon className={`w-5 h-5 ${model.color}`} />
-                      </div>
-                      <span className="text-xs px-2 py-1 rounded-full bg-white/5 border border-white/10 text-white/40">
-                        {model.tag}
-                      </span>
+                    <div className={`w-12 h-12 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
+                      <item.icon className={`w-6 h-6 ${item.color}`} />
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      {model.name}
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      {item.title}
                     </h3>
-                    <p className="text-white/40 text-sm">{model.desc}</p>
+                    <p className="text-white/50 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
                 </StaggerItem>
               ))}
             </div>
 
+            {/* Goal statement */}
             <StaggerItem>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  { label: 'Architecture', value: 'Hybrid SSM + Attention', icon: Brain },
-                  { label: 'Input', value: 'Byte-level (raw bytes)', icon: Binary },
-                  { label: 'Training', value: 'Self-evolution loop', icon: Target },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="bg-white/5 rounded-2xl p-4 border border-white/10 text-center"
-                  >
-                    <item.icon className="w-5 h-5 text-purple-400 mx-auto mb-2" />
-                    <div className="text-sm font-medium text-white">{item.value}</div>
-                    <div className="text-xs text-white/30 mt-1">{item.label}</div>
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                  <div className="flex items-center gap-3 text-white/60 text-sm shrink-0">
+                    <span className="text-white font-medium">RAXI Engine</span>
+                    <ArrowRight className="w-4 h-4 text-purple-400" />
+                    <span>Build</span>
+                    <ArrowRight className="w-4 h-4 text-purple-400" />
+                    <span>Deploy</span>
+                    <ArrowRight className="w-4 h-4 text-purple-400" />
+                    <span>Monitor</span>
+                    <ArrowRight className="w-4 h-4 text-purple-400" />
+                    <span>Maintain</span>
                   </div>
-                ))}
+                </div>
+                <p className="text-white/30 text-xs mt-4">
+                  Not just creation — continuous maintenance, updates, and evolution
+                  of products throughout their entire lifecycle.
+                </p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="flex justify-center mt-6">
+                <Link
+                  href="/works"
+                  className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
+                >
+                  See our products
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
               </div>
             </StaggerItem>
           </StaggerContainer>
