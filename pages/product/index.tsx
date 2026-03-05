@@ -129,7 +129,7 @@ export default function Product() {
                 Vision
               </h2>
               <p className="text-white/50 text-center mb-12 max-w-2xl mx-auto">
-                Fully autonomous management across Web, App, and Infrastructure
+                Where we&apos;re heading — fully autonomous management across Web, App, and Infrastructure
               </p>
             </StaggerItem>
 
@@ -138,21 +138,21 @@ export default function Product() {
               {[
                 {
                   title: 'Web',
-                  desc: 'Autonomous deployment, monitoring, content updates, and performance optimization for web products.',
+                  desc: 'Targeting autonomous deployment, monitoring, content updates, and performance optimization for web products.',
                   icon: Globe,
                   color: 'text-blue-400',
                   bgColor: 'bg-blue-500/20',
                 },
                 {
                   title: 'App',
-                  desc: 'End-to-end app lifecycle management — from build and release to user feedback analysis and iterative updates.',
+                  desc: 'Aiming for end-to-end app lifecycle management — from build and release to user feedback analysis and iterative updates.',
                   icon: Smartphone,
                   color: 'text-purple-400',
                   bgColor: 'bg-purple-500/20',
                 },
                 {
                   title: 'Infrastructure',
-                  desc: 'Self-healing infrastructure that detects anomalies, scales resources, and resolves incidents without human intervention.',
+                  desc: 'Building toward self-healing infrastructure that detects anomalies, scales resources, and resolves incidents autonomously.',
                   icon: Server,
                   color: 'text-pink-400',
                   bgColor: 'bg-pink-500/20',
@@ -191,8 +191,8 @@ export default function Product() {
                   </div>
                 </div>
                 <p className="text-white/30 text-xs mt-4">
-                  Not just creation — continuous maintenance, updates, and evolution
-                  of products throughout their entire lifecycle.
+                  Our goal is not just creation — but continuous maintenance, updates,
+                  and evolution of products throughout their entire lifecycle.
                 </p>
               </div>
             </StaggerItem>
@@ -203,7 +203,7 @@ export default function Product() {
                   href="/works"
                   className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
                 >
-                  See our products
+                  See products RAXI will manage
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
