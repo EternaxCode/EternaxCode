@@ -106,6 +106,30 @@ export const worksData: WorkProject[] = [
     accentColor: 'rgba(99, 102, 241, 0.4)',
   },
   {
+    type: 'web',
+    id: 'sajulens',
+    title: 'sajulens.com',
+    url: 'https://sajulens.com',
+    description:
+      'An AI-powered saju (사주) reading service that interprets the traditional four pillars of destiny through a modern lens. Personalized insights at a glance.',
+    tags: ['AI', 'Saju', 'Web'],
+    fallbackGradient: 'from-violet-900 via-purple-800 to-fuchsia-900',
+    fallbackLabel: 'sajulens',
+    accentColor: 'rgba(168, 85, 247, 0.4)',
+  },
+  {
+    type: 'web',
+    id: 'jejuway',
+    title: 'jejuway.com',
+    url: 'https://jejuway.com',
+    description:
+      'A travel companion for exploring Jeju Island. Curated routes, hidden spots, and local recommendations to help you find your own way around Jeju.',
+    tags: ['Web', 'Travel', 'Jeju'],
+    fallbackGradient: 'from-teal-900 via-cyan-800 to-sky-900',
+    fallbackLabel: 'jejuway',
+    accentColor: 'rgba(20, 184, 166, 0.4)',
+  },
+  {
     type: 'app',
     id: 'memoire',
     title: 'Memoire',
