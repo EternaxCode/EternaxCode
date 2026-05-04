@@ -139,6 +139,7 @@ export const worksData: WorkProject[] = [
     description:
       'A visual diary for daily moments. Capture beautiful memories with photos, organize with calendar view, and create magazine-style PDF books.',
     tags: ['App', 'iOS', 'Android', 'Coming Soon'],
+    image: '/works/memoire.png',
     fallbackGradient: 'from-rose-900 via-pink-800 to-fuchsia-900',
     fallbackLabel: 'Memoire',
     accentColor: 'rgba(244, 63, 94, 0.4)',
