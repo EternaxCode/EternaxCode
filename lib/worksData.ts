@@ -135,10 +135,10 @@ export const worksData: WorkProject[] = [
     type: 'app',
     id: 'memoire',
     title: 'Memoire',
-    url: '#',
+    url: 'https://apps.apple.com/kr/app/memoire-%EB%82%98%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6759441421',
     description:
       'A visual diary for daily moments. Capture beautiful memories with photos, organize with calendar view, and create magazine-style PDF books.',
-    tags: ['App', 'iOS', 'Android', 'Coming Soon'],
+    tags: ['App', 'iOS', 'Android'],
     image: '/works/memoire.png',
     fallbackGradient: 'from-rose-900 via-pink-800 to-fuchsia-900',
     fallbackLabel: 'Memoire',
@@ -225,7 +225,7 @@ export const worksData: WorkProject[] = [
         { metric: '0¢', label: 'Free to Start' },
       ],
       ctaText: 'Download on the App Store',
-      ctaUrl: '#',
+      ctaUrl: 'https://apps.apple.com/kr/app/memoire-%EB%82%98%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6759441421',
     },
     privacy: {
       effectiveDate: '2026-03-04',
