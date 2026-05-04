@@ -47,3 +47,6 @@ coverage/
 # Images generated in chat sessions (if any)
 ChatGPT Image*/
 raxi-engine/
+
+# Playwright MCP scratch
+.playwright-mcp/

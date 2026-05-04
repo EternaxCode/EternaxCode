@@ -113,6 +113,7 @@ export const worksData: WorkProject[] = [
     description:
       'An AI-powered saju (사주) reading service that interprets the traditional four pillars of destiny through a modern lens. Personalized insights at a glance.',
     tags: ['AI', 'Saju', 'Web'],
+    image: '/works/sajulens.png',
     fallbackGradient: 'from-violet-900 via-purple-800 to-fuchsia-900',
     fallbackLabel: 'sajulens',
     accentColor: 'rgba(168, 85, 247, 0.4)',
@@ -125,6 +126,7 @@ export const worksData: WorkProject[] = [
     description:
       'A travel companion for exploring Jeju Island. Curated routes, hidden spots, and local recommendations to help you find your own way around Jeju.',
     tags: ['Web', 'Travel', 'Jeju'],
+    image: '/works/jejuway.png',
     fallbackGradient: 'from-teal-900 via-cyan-800 to-sky-900',
     fallbackLabel: 'jejuway',
     accentColor: 'rgba(20, 184, 166, 0.4)',
