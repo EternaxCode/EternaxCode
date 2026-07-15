@@ -33,6 +33,63 @@ export interface MarketingContent {
   ctaUrl: string;
 }
 
+// ─── Case Study (shared by every project) ───
+
+export interface CaseStudyOverview {
+  summary: string;
+  challenge: string;
+  approach: string;
+  scope: string[];
+}
+
+export interface DesignColor {
+  name: string;
+  hex: string;
+  role: string;
+}
+
+export interface DesignTypography {
+  family: string;
+  usage: string;
+}
+
+export interface DesignPrinciple {
+  title: string;
+  description: string;
+}
+
+export interface DesignSystem {
+  concept: string;
+  colors: DesignColor[];
+  typography: DesignTypography[];
+  principles: DesignPrinciple[];
+}
+
+export interface CaseStudyLink {
+  label: string;
+  url: string;
+  description: string;
+}
+
+export interface CaseStudy {
+  tagline: string;
+  overview: CaseStudyOverview;
+  designSystem: DesignSystem;
+  techStack: string[];
+  deliverables: string[];
+  links: CaseStudyLink[];
+}
+
+// ─── Categories ───
+
+export type WorkCategory = 'web' | 'app' | 'design';
+
+export const categoryLabels: Record<WorkCategory, string> = {
+  web: 'Web',
+  app: 'App',
+  design: 'Design',
+};
+
 // ─── Discriminated Union ───
 
 interface WorkProjectBase {
@@ -45,10 +102,15 @@ interface WorkProjectBase {
   fallbackGradient: string;
   fallbackLabel: string;
   accentColor: string;
+  caseStudy: CaseStudy;
 }
 
 export interface WebProject extends WorkProjectBase {
   type: 'web';
+}
+
+export interface DesignProject extends WorkProjectBase {
+  type: 'design';
 }
 
 export interface AppProject extends WorkProjectBase {
@@ -61,7 +123,7 @@ export interface AppProject extends WorkProjectBase {
   privacy: PrivacyContent;
 }
 
-export type WorkProject = WebProject | AppProject;
+export type WorkProject = WebProject | AppProject | DesignProject;
 
 // ─── Data ───
 
@@ -78,6 +140,42 @@ export const worksData: WorkProject[] = [
     fallbackGradient: 'from-amber-900 via-orange-800 to-yellow-900',
     fallbackLabel: 'ddubakehouse',
     accentColor: 'rgba(245, 158, 11, 0.4)',
+    caseStudy: {
+      tagline: 'A warm digital storefront for a Jeju bakery brand.',
+      overview: {
+        summary:
+          'Ddu Bakehouse needed more than a menu page — it needed a website that feels like walking into the bakery itself. We designed and built a brand-driven web experience that translates the warmth of freshly baked bread into color, typography, and motion.',
+        challenge:
+          'Local bakeries rarely stand out online. The brand\'s handmade, cozy identity had to survive the transition to a digital medium without feeling generic or template-like.',
+        approach:
+          'We started from the brand\'s physical identity — warm tones, natural textures, handwritten touches — and built a design system around it. Every section was crafted to showcase products photogenically while keeping load times fast on mobile.',
+        scope: ['Brand-driven UI design', 'Responsive web development', 'Product showcase', 'Location & contact experience'],
+      },
+      designSystem: {
+        concept:
+          'The visual language borrows directly from the bakery: butter, toast, and cream tones over a warm charcoal base, paired with generous whitespace so product photography stays the hero.',
+        colors: [
+          { name: 'Butter Amber', hex: '#F59E0B', role: 'Primary accent & CTAs' },
+          { name: 'Toasted Brown', hex: '#78350F', role: 'Depth & section contrast' },
+          { name: 'Cream', hex: '#FEF3C7', role: 'Highlight surfaces' },
+          { name: 'Warm Charcoal', hex: '#1C1917', role: 'Base background & text' },
+        ],
+        typography: [
+          { family: 'Pretendard', usage: 'Korean body text & UI — clean, highly legible on every device' },
+          { family: 'Serif Display', usage: 'Headlines — adds an artisanal, handcrafted character' },
+        ],
+        principles: [
+          { title: 'Photography first', description: 'Layouts frame product photos as the main content; UI stays quiet around them.' },
+          { title: 'Warmth over polish', description: 'Rounded corners, soft shadows, and warm hues keep the experience approachable.' },
+          { title: 'Mobile-first pace', description: 'Most visitors arrive from maps and social links on mobile, so every flow starts there.' },
+        ],
+      },
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Vercel'],
+      deliverables: ['UI/UX design', 'Design system', 'Frontend development', 'SEO & deployment'],
+      links: [
+        { label: 'Live Website', url: 'https://ddubakehouse.com', description: 'Visit the production site' },
+      ],
+    },
   },
   {
     type: 'web',
@@ -91,6 +189,42 @@ export const worksData: WorkProject[] = [
     fallbackGradient: 'from-emerald-900 via-green-800 to-teal-900',
     fallbackLabel: '로또풀이',
     accentColor: 'rgba(16, 185, 129, 0.4)',
+    caseStudy: {
+      tagline: 'Traditional fortune-telling meets playful modern UX.',
+      overview: {
+        summary:
+          '로또풀이 turns Korean saju fortune-telling into an entertaining lottery-number experience. The product needed to feel fun and lighthearted while handling a genuinely complex domain — traditional four-pillars analysis — under the hood.',
+        challenge:
+          'Saju terminology is dense and unfamiliar to younger users. Presenting it raw would alienate the audience; oversimplifying it would lose the charm that makes the service unique.',
+        approach:
+          'We layered the experience: a playful, game-like surface for casual users, with progressively deeper explanations for the curious. Motion and micro-interactions carry the "reveal" moments that make fortune results feel special.',
+        scope: ['Service concept & UX flow', 'Interactive result experience', 'Responsive web development', 'Korean IDN domain setup'],
+      },
+      designSystem: {
+        concept:
+          'Jade and gold — colors of luck and prosperity in Korean tradition — reinterpreted on a dark modern canvas. The palette signals fortune without falling into old-fashioned clichés.',
+        colors: [
+          { name: 'Lucky Jade', hex: '#10B981', role: 'Primary accent & result highlights' },
+          { name: 'Deep Forest', hex: '#064E3B', role: 'Section backgrounds' },
+          { name: 'Coin Gold', hex: '#FBBF24', role: 'Fortune moments & emphasis' },
+          { name: 'Night Ink', hex: '#0F172A', role: 'Base background' },
+        ],
+        typography: [
+          { family: 'Pretendard', usage: 'Body & UI text — optimized for Korean readability' },
+          { family: 'Rounded Display', usage: 'Numbers & results — friendly, game-like personality' },
+        ],
+        principles: [
+          { title: 'Delight in the reveal', description: 'Fortune results animate in with anticipation — the core emotional beat of the product.' },
+          { title: 'Serious engine, playful surface', description: 'Complex saju logic stays invisible; users only feel the fun.' },
+          { title: 'One-thumb flows', description: 'Every interaction is reachable and completable with one thumb on mobile.' },
+        ],
+      },
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      deliverables: ['UX design', 'Interaction design', 'Frontend development', 'Saju analysis integration'],
+      links: [
+        { label: 'Live Website', url: 'https://로또풀이.kr', description: 'Visit the production site' },
+      ],
+    },
   },
   {
     type: 'web',
@@ -104,6 +238,42 @@ export const worksData: WorkProject[] = [
     fallbackGradient: 'from-blue-900 via-indigo-800 to-purple-900',
     fallbackLabel: 'econalk',
     accentColor: 'rgba(99, 102, 241, 0.4)',
+    caseStudy: {
+      tagline: 'AI-generated economic insight, readable in any language.',
+      overview: {
+        summary:
+          'Econalk is an AI-powered news platform that analyzes economic events and delivers insights in multiple languages. The product combines automated content pipelines with an editorial-grade reading experience.',
+        challenge:
+          'AI-generated content platforms often feel low-trust. Econalk had to look and read like a credible publication while the content pipeline runs fully automated, across languages with very different typographic needs.',
+        approach:
+          'We designed an editorial layout system — clear hierarchy, disciplined type scale, restrained color — that holds up across languages and scripts. The AI pipeline was shaped to produce structured content that slots cleanly into these layouts.',
+        scope: ['Editorial design system', 'Multilingual UX architecture', 'AI content pipeline integration', 'SEO-oriented development'],
+      },
+      designSystem: {
+        concept:
+          'A news-desk aesthetic: indigo authority tones on deep navy, with a strict typographic grid. Color is used sparingly so data and headlines carry the hierarchy.',
+        colors: [
+          { name: 'Insight Indigo', hex: '#6366F1', role: 'Primary accent & links' },
+          { name: 'Midnight Navy', hex: '#1E1B4B', role: 'Header & section backgrounds' },
+          { name: 'Signal Sky', hex: '#38BDF8', role: 'Data highlights & charts' },
+          { name: 'Slate Black', hex: '#0F172A', role: 'Base background' },
+        ],
+        typography: [
+          { family: 'Multiscript Sans', usage: 'Body — consistent rhythm across Korean, Latin, and CJK scripts' },
+          { family: 'Condensed Display', usage: 'Headlines — dense, newsroom-style hierarchy' },
+        ],
+        principles: [
+          { title: 'Credibility by design', description: 'Editorial discipline — grids, consistent spacing, restrained color — builds trust in automated content.' },
+          { title: 'Language-agnostic layout', description: 'Every component tolerates text expansion and different scripts without breaking.' },
+          { title: 'Scannable density', description: 'Readers skim; hierarchy lets them find the one insight they came for in seconds.' },
+        ],
+      },
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'LLM Pipeline', 'i18n'],
+      deliverables: ['Editorial design system', 'Multilingual architecture', 'AI pipeline integration', 'Frontend development'],
+      links: [
+        { label: 'Live Website', url: 'https://econalk.com', description: 'Visit the production site' },
+      ],
+    },
   },
   {
     type: 'web',
@@ -117,6 +287,42 @@ export const worksData: WorkProject[] = [
     fallbackGradient: 'from-violet-900 via-purple-800 to-fuchsia-900',
     fallbackLabel: 'sajulens',
     accentColor: 'rgba(168, 85, 247, 0.4)',
+    caseStudy: {
+      tagline: 'The four pillars of destiny, interpreted by AI.',
+      overview: {
+        summary:
+          'SajuLens reinterprets traditional Korean four-pillars analysis through AI, delivering personalized readings in a modern, approachable interface. Depth of tradition, clarity of a modern product.',
+        challenge:
+          'Saju readings are long-form and interpretive. Turning an AI-generated reading into something that feels personal, trustworthy, and worth reading to the end — rather than a wall of generated text — was the core design problem.',
+        approach:
+          'Readings are broken into a guided, sectioned journey with visual anchors for each pillar. A mystic-but-modern visual identity keeps the experience atmospheric without becoming kitsch.',
+        scope: ['Product & UX design', 'AI reading experience', 'Responsive web development', 'Brand identity'],
+      },
+      designSystem: {
+        concept:
+          'Amethyst and violet on a near-black night sky — mysticism rendered with modern gradients and glassmorphism instead of traditional ornament.',
+        colors: [
+          { name: 'Amethyst', hex: '#A855F7', role: 'Primary accent & highlights' },
+          { name: 'Deep Violet', hex: '#4C1D95', role: 'Section depth & gradients' },
+          { name: 'Fuchsia Glow', hex: '#E879F9', role: 'Mystic emphasis moments' },
+          { name: 'Night Sky', hex: '#0C0518', role: 'Base background' },
+        ],
+        typography: [
+          { family: 'Pretendard', usage: 'Body & readings — sustained readability for long-form text' },
+          { family: 'Elegant Serif', usage: 'Pillar titles — a ceremonial, timeless voice' },
+        ],
+        principles: [
+          { title: 'Guided journey', description: 'Long readings become a paced, sectioned experience with a clear sense of progress.' },
+          { title: 'Modern mysticism', description: 'Gradients, glass, and glow express the mystical — no clichéd fortune-teller motifs.' },
+          { title: 'Personal weight', description: 'Layout and motion treat each reading as a document made for one person.' },
+        ],
+      },
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'LLM Integration'],
+      deliverables: ['Brand identity', 'UX design', 'AI reading pipeline', 'Frontend development'],
+      links: [
+        { label: 'Live Website', url: 'https://sajulens.com', description: 'Visit the production site' },
+      ],
+    },
   },
   {
     type: 'web',
@@ -130,6 +336,42 @@ export const worksData: WorkProject[] = [
     fallbackGradient: 'from-teal-900 via-cyan-800 to-sky-900',
     fallbackLabel: 'jejuway',
     accentColor: 'rgba(20, 184, 166, 0.4)',
+    caseStudy: {
+      tagline: 'Find your own way around Jeju Island.',
+      overview: {
+        summary:
+          'JejuWay is a travel companion for exploring Jeju Island — curated routes, hidden spots, and local recommendations, organized so travelers can build their own way instead of following a fixed itinerary.',
+        challenge:
+          'Travel content is abundant but fragmented. The product had to organize scattered local knowledge into browsable, trustworthy curation — and feel like Jeju, not like a generic travel aggregator.',
+        approach:
+          'We built the information architecture around routes and moments rather than listings. The visual identity draws from Jeju itself: ocean teals, basalt darks, and photography-forward layouts.',
+        scope: ['Information architecture', 'Curation UX design', 'Responsive web development', 'Local content strategy'],
+      },
+      designSystem: {
+        concept:
+          'Jeju\'s landscape as a palette — ocean teal, deep basalt, and cyan sky — with airy, photography-led layouts that let the island sell itself.',
+        colors: [
+          { name: 'Jeju Teal', hex: '#14B8A6', role: 'Primary accent & navigation' },
+          { name: 'Ocean Cyan', hex: '#06B6D4', role: 'Interactive highlights' },
+          { name: 'Basalt', hex: '#134E4A', role: 'Depth & card surfaces' },
+          { name: 'Deep Sea', hex: '#042F2E', role: 'Base background' },
+        ],
+        typography: [
+          { family: 'Pretendard', usage: 'UI & descriptions — clarity for on-the-go reading' },
+          { family: 'Humanist Display', usage: 'Place names & headers — a warm, guidebook voice' },
+        ],
+        principles: [
+          { title: 'Place before interface', description: 'Photography and place identity lead every screen; chrome stays minimal.' },
+          { title: 'Routes, not lists', description: 'Content is structured as journeys — how spots connect matters as much as the spots.' },
+          { title: 'Trust through locality', description: 'Local voice and specific detail differentiate curation from aggregation.' },
+        ],
+      },
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Map Integration'],
+      deliverables: ['Information architecture', 'UI/UX design', 'Frontend development', 'Content structure'],
+      links: [
+        { label: 'Live Website', url: 'https://jejuway.com', description: 'Visit the production site' },
+      ],
+    },
   },
   {
     type: 'app',
@@ -146,6 +388,42 @@ export const worksData: WorkProject[] = [
     subtitle: 'A visual diary for daily moments.',
     heroDescription:
       'Memoire is an Instagram-style visual diary app that lets you record daily memories with photos and text. Browse entries on an infinite-scroll calendar, generate magazine-style PDF books, customize themes, and sync seamlessly across devices via iCloud or Google Drive — all with a local-first, privacy-focused architecture.',
+    caseStudy: {
+      tagline: 'A visual diary that turns daily moments into keepsakes.',
+      overview: {
+        summary:
+          'Memoire is a cross-platform visual diary app for iOS and Android. Users capture daily moments with photos and text, browse them on an infinite-scroll calendar, and export magazine-style PDF books — with a local-first architecture that keeps personal data on the user\'s own device and cloud.',
+        challenge:
+          'Diary apps live or die on daily retention and trust. The app had to make journaling feel effortless and rewarding every day, while guaranteeing privacy — no personal content on our servers — without sacrificing multi-device sync.',
+        approach:
+          'A local-first architecture with per-platform cloud sync (iCloud / Google Drive) solved the trust problem structurally. On the experience side, we invested in the emotional payoff: beautiful entry layouts, theme customization, and the PDF book as a tangible reward for consistent journaling.',
+        scope: ['Product design', 'iOS & Android development', 'Local-first sync architecture', 'PDF generation engine', '16-language localization'],
+      },
+      designSystem: {
+        concept:
+          'Soft rose and blush tones create an intimate, personal atmosphere — a diary should feel like a private space, not a social feed. Five built-in themes let each user make it their own.',
+        colors: [
+          { name: 'Memoire Rose', hex: '#F43F5E', role: 'Primary accent & actions' },
+          { name: 'Blush', hex: '#FDA4AF', role: 'Soft highlights & moods' },
+          { name: 'Deep Plum', hex: '#831843', role: 'Depth & dark theme accents' },
+          { name: 'Paper', hex: '#FFF1F2', role: 'Light surfaces & book pages' },
+        ],
+        typography: [
+          { family: 'System Sans (SF Pro / Roboto)', usage: 'UI — native feel on each platform' },
+          { family: 'Serif Book', usage: 'PDF book exports — a printed-keepsake character' },
+        ],
+        principles: [
+          { title: 'Effortless capture', description: 'A new entry — photo, mood, weather, text — takes under a minute, every day.' },
+          { title: 'Privacy as architecture', description: 'Local-first storage and user-owned cloud sync make privacy structural, not a policy promise.' },
+          { title: 'Memories as artifacts', description: 'Calendar browsing and PDF books turn scattered entries into something worth keeping.' },
+        ],
+      },
+      techStack: ['Flutter', 'Dart', 'Riverpod', 'Drift (SQLite)', 'Firebase', 'iCloud', 'Google Drive', 'PDF Generation'],
+      deliverables: ['Product design', 'Cross-platform app development', 'Sync architecture', 'App Store launch', 'Localization (16 languages)'],
+      links: [
+        { label: 'App Store', url: 'https://apps.apple.com/kr/app/memoire-%EB%82%98%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6759441421', description: 'Download for iOS' },
+      ],
+    },
     spec: {
       headline: 'What is Memoire?',
       introduction:
@@ -284,10 +562,19 @@ export const worksData: WorkProject[] = [
 
 // ─── Helpers ───
 
+export function getProjectById(id: string): WorkProject | undefined {
+  return worksData.find((p) => p.id === id);
+}
+
 export function getAppProjects(): AppProject[] {
   return worksData.filter((p): p is AppProject => p.type === 'app');
 }
 
 export function getAppProjectById(id: string): AppProject | undefined {
   return getAppProjects().find((p) => p.id === id);
+}
+
+export function getCategories(): WorkCategory[] {
+  const present = new Set(worksData.map((p) => p.type));
+  return (['web', 'app', 'design'] as WorkCategory[]).filter((c) => present.has(c));
 }
