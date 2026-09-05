@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Package, Globe, Smartphone, Palette } from 'lucide-react';
+import { Package, Globe, Smartphone, Gamepad2, Palette } from 'lucide-react';
 import StaggerContainer, { StaggerItem } from '@/components/StaggerContainer';
 import WorkCard from '@/components/WorkCard';
 import { worksData, getCategories, categoryLabels } from '@/lib/worksData';
@@ -28,6 +28,13 @@ const capabilities: {
     icon: Smartphone,
     description:
       'Cross-platform iOS & Android apps, from product design to App Store launch, built with privacy-first architecture.',
+  },
+  {
+    category: 'game',
+    title: 'Games & Live Ops',
+    icon: Gamepad2,
+    description:
+      'Original games we design, build, and operate ourselves — from pixel-art prototypes to live-service updates.',
   },
   {
     category: 'design',
@@ -64,7 +71,7 @@ export default function Works() {
         <title>Works - EternaxCode</title>
         <meta
           name="description"
-          content="Explore case studies by EternaxCode — web platforms, mobile apps, and design systems, each documented with overview, design system, and references."
+          content="Explore case studies by EternaxCode — web platforms, mobile apps, games, and design systems, each documented with overview, design system, and references."
         />
       </Head>
 
@@ -80,13 +87,13 @@ export default function Works() {
               Selected Works
             </h1>
             <p className="text-sm sm:text-base text-white/60 max-w-xl mx-auto leading-relaxed">
-              Case studies across web, app, and design — each documented with a service overview,
+              Case studies across web, app, game, and design — each documented with a service overview,
               design system, and references so you can see exactly how we work.
             </p>
           </StaggerItem>
 
           {/* Capabilities */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 sm:mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 sm:mb-14">
             {capabilities.map((cap) => {
               const Icon = cap.icon;
               return (

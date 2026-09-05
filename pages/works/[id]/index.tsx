@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, ReactNode } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import {
+  Archive,
   ArrowLeft,
   ArrowUpRight,
   ExternalLink,
@@ -17,8 +18,21 @@ import {
   Compass,
 } from 'lucide-react';
 import StaggerContainer, { StaggerItem } from '@/components/StaggerContainer';
-import { worksData, getProjectById, categoryLabels } from '@/lib/worksData';
+import GameDetail from '@/components/GameDetail';
+import {
+  worksData,
+  getProjectById,
+  getProjectStatus,
+  categoryLabels,
+  statusLabels,
+} from '@/lib/worksData';
 import type { WorkProject } from '@/lib/worksData';
+
+const statusBadgeClass = {
+  live: '',
+  'in-development': 'bg-amber-400/20 border-amber-300/40 text-amber-100',
+  discontinued: 'bg-red-500/20 border-red-300/40 text-red-100',
+} as const;
 
 interface Props {
   project: WorkProject;
@@ -60,6 +74,13 @@ export default function WorkCaseStudy({ project }: Props) {
   const { caseStudy } = project;
   const [imgError, setImgError] = useState(false);
   const showImage = project.image && !imgError;
+  const status = getProjectStatus(project);
+  const isDiscontinued = status === 'discontinued';
+
+  // Games get their own pixel-art layout.
+  if (project.type === 'game') {
+    return <GameDetail project={project} />;
+  }
 
   return (
     <>
@@ -91,6 +112,13 @@ export default function WorkCaseStudy({ project }: Props) {
                   <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-white/15 border border-white/20 text-white/90">
                     {categoryLabels[project.type]}
                   </span>
+                  {status !== 'live' && (
+                    <span
+                      className={`text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full border ${statusBadgeClass[status]}`}
+                    >
+                      {statusLabels[status]}
+                    </span>
+                  )}
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -119,6 +147,30 @@ export default function WorkCaseStudy({ project }: Props) {
                 )}
               </StaggerItem>
 
+              {project.statusNote && (
+                <StaggerItem className="mt-8">
+                  <div
+                    role="note"
+                    className={`flex items-start gap-4 rounded-2xl border p-5 sm:p-6 ${
+                      isDiscontinued
+                        ? 'bg-red-500/10 border-red-300/25'
+                        : 'bg-amber-400/10 border-amber-300/25'
+                    }`}
+                  >
+                    <Archive
+                      size={20}
+                      className={`shrink-0 mt-0.5 ${isDiscontinued ? 'text-red-200' : 'text-amber-200'}`}
+                    />
+                    <div>
+                      <p className="text-sm font-semibold text-white/90 mb-1">
+                        {isDiscontinued ? 'This service has ended' : statusLabels[status]}
+                      </p>
+                      <p className="text-sm text-white/65 leading-relaxed">{project.statusNote}</p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              )}
+
               {showImage && (
                 <StaggerItem className="mt-10">
                   <div
@@ -129,10 +181,17 @@ export default function WorkCaseStudy({ project }: Props) {
                       src={project.image!}
                       alt={project.title}
                       fill
-                      className="object-cover"
+                      className={`object-cover ${isDiscontinued ? 'grayscale opacity-60' : ''}`}
                       unoptimized
                       onError={() => setImgError(true)}
                     />
+                    {isDiscontinued && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="rotate-[-8deg] rounded-md border-4 border-red-300/70 px-6 py-2 text-2xl sm:text-4xl font-black uppercase tracking-[0.3em] text-red-200/80 bg-black/30 backdrop-blur-sm">
+                          Service Ended
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </StaggerItem>
               )}
@@ -312,6 +371,15 @@ export default function WorkCaseStudy({ project }: Props) {
 
             {/* ── 04 Links ── */}
             <Section index="04" title="Links" icon={ArrowUpRight}>
+              {caseStudy.links.length === 0 && (
+                <StaggerItem>
+                  <div className="rounded-2xl bg-white/5 border border-dashed border-white/15 p-6 text-sm text-white/50 leading-relaxed">
+                    {isDiscontinued
+                      ? 'This service is no longer online, so there are no active links. The case study above is kept as an archive.'
+                      : 'Links will be added once the project is publicly available.'}
+                  </div>
+                </StaggerItem>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {caseStudy.links.map((link) => (
                   <StaggerItem key={link.url}>

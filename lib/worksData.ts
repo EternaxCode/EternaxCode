@@ -1,3 +1,68 @@
+import type { PixelSpriteKey } from '@/lib/pixelSprites';
+
+// ─── Lifecycle Status (shared by every project) ───
+
+export type ProjectStatus = 'live' | 'in-development' | 'discontinued';
+
+export const statusLabels: Record<ProjectStatus, string> = {
+  live: 'Live',
+  'in-development': 'In Development',
+  discontinued: 'Service Ended',
+};
+
+// ─── Content Types for Game Projects ───
+
+export interface GameStats {
+  /** 0–5 scale, rendered as segmented pixel bars. */
+  atk: number;
+  def: number;
+  spd: number;
+}
+
+export interface GameUnit {
+  name: string;
+  nameEn: string;
+  role: string;
+  description: string;
+  sprite: PixelSpriteKey;
+  stats: GameStats;
+}
+
+export interface GameFeature {
+  sprite: PixelSpriteKey;
+  title: string;
+  description: string;
+}
+
+export interface GameOperation {
+  title: string;
+  description: string;
+}
+
+export interface GameRoadmapItem {
+  phase: string;
+  title: string;
+  description: string;
+  done: boolean;
+}
+
+export interface GameContent {
+  genre: string;
+  platforms: string[];
+  players: string;
+  /** Short build tag shown on the title screen, e.g. "DEV BUILD". */
+  buildLabel: string;
+  /** Spoken by the baker NPC in the intro dialogue box. */
+  pitch: string;
+  features: GameFeature[];
+  units: GameUnit[];
+  enemies: GameUnit[];
+  operations: GameOperation[];
+  roadmap: GameRoadmapItem[];
+  /** Set once the game is playable; the "Press Start" button links here. */
+  playUrl?: string;
+}
+
 // ─── Content Types for App Projects ───
 
 export interface SpecContent {
@@ -82,11 +147,12 @@ export interface CaseStudy {
 
 // ─── Categories ───
 
-export type WorkCategory = 'web' | 'app' | 'design';
+export type WorkCategory = 'web' | 'app' | 'game' | 'design';
 
 export const categoryLabels: Record<WorkCategory, string> = {
   web: 'Web',
   app: 'App',
+  game: 'Game',
   design: 'Design',
 };
 
@@ -102,6 +168,10 @@ interface WorkProjectBase {
   fallbackGradient: string;
   fallbackLabel: string;
   accentColor: string;
+  /** Defaults to 'live' when omitted. */
+  status?: ProjectStatus;
+  /** Shown alongside the status badge on the detail page (e.g. why a service ended). */
+  statusNote?: string;
   caseStudy: CaseStudy;
 }
 
@@ -123,7 +193,14 @@ export interface AppProject extends WorkProjectBase {
   privacy: PrivacyContent;
 }
 
-export type WorkProject = WebProject | AppProject | DesignProject;
+export interface GameProject extends WorkProjectBase {
+  type: 'game';
+  subtitle: string;
+  heroDescription: string;
+  game: GameContent;
+}
+
+export type WorkProject = WebProject | AppProject | GameProject | DesignProject;
 
 // ─── Data ───
 
@@ -230,19 +307,22 @@ export const worksData: WorkProject[] = [
     type: 'web',
     id: 'econalk',
     title: 'econalk.com',
-    url: 'https://econalk.com',
+    url: '#',
     description:
-      'An AI-powered news platform delivering economic insights in multiple languages. Real-time analysis with multilingual support.',
+      'An AI-powered news platform that delivered economic insights in multiple languages. The service has ended — this case study is kept as an archive.',
     tags: ['AI', 'News', 'Multi-language'],
     image: '/works/econalk.png',
     fallbackGradient: 'from-blue-900 via-indigo-800 to-purple-900',
     fallbackLabel: 'econalk',
     accentColor: 'rgba(99, 102, 241, 0.4)',
+    status: 'discontinued',
+    statusNote:
+      'Econalk has ended its service and econalk.com is no longer available. Thank you to everyone who read along — this page remains as an archive of the work.',
     caseStudy: {
       tagline: 'AI-generated economic insight, readable in any language.',
       overview: {
         summary:
-          'Econalk is an AI-powered news platform that analyzes economic events and delivers insights in multiple languages. The product combines automated content pipelines with an editorial-grade reading experience.',
+          'Econalk was an AI-powered news platform that analyzed economic events and delivered insights in multiple languages. The product combined automated content pipelines with an editorial-grade reading experience.',
         challenge:
           'AI-generated content platforms often feel low-trust. Econalk had to look and read like a credible publication while the content pipeline runs fully automated, across languages with very different typographic needs.',
         approach:
@@ -270,9 +350,7 @@ export const worksData: WorkProject[] = [
       },
       techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'LLM Pipeline', 'i18n'],
       deliverables: ['Editorial design system', 'Multilingual architecture', 'AI pipeline integration', 'Frontend development'],
-      links: [
-        { label: 'Live Website', url: 'https://econalk.com', description: 'Visit the production site' },
-      ],
+      links: [],
     },
   },
   {
@@ -558,6 +636,168 @@ export const worksData: WorkProject[] = [
       ],
     },
   },
+  {
+    type: 'game',
+    id: 'bbang-eonjeon',
+    title: '빵어전',
+    url: '#',
+    description:
+      'A pixel-art bread defense game built and operated by EternaxCode. Rally an army of bread to hold the bakery against waves of mold and crumb-hungry pests.',
+    tags: ['Game', 'Pixel Art', 'Defense'],
+    image: '/works/bbang-eonjeon.png',
+    fallbackGradient: 'from-amber-900 via-orange-900 to-stone-900',
+    fallbackLabel: '빵어전',
+    accentColor: 'rgba(246, 199, 67, 0.4)',
+    status: 'in-development',
+    statusNote:
+      'In development — designed, built, and operated in-house by EternaxCode. Release channels will be announced here first.',
+    subtitle: '빵집을 지켜라! Rally your bread and hold the bakery until dawn.',
+    heroDescription:
+      '빵어전 (Bbang-eonjeon) is a pun on 방어전, "defense battle", with 빵 — bread. It is EternaxCode\'s first original game: a pixel-art defense game where toast knights, baguette lancers, and melon-bread guardians hold the line against mold and ants. We design it, build it, and run it as a live service ourselves.',
+    caseStudy: {
+      tagline: 'Bread vs. mold. A pixel-art defense game we build and operate ourselves.',
+      overview: {
+        summary:
+          '빵어전 is EternaxCode\'s first original game and the first product we operate as a live service end-to-end. Players place bread units along the path to the bakery and survive escalating waves of mold, ants, and other crumb-hungry pests. Every part — game design, pixel art, client, backend, and live operations — is built in-house.',
+        challenge:
+          'A defense game lives on its balance and pacing: too easy is boring, too hard is frustrating, and every new unit or enemy shifts the curve. Operating a game also means shipping updates continuously without breaking what players already love.',
+        approach:
+          'We treat the game like a product with a live roadmap. Waves, units, and the economy are data-driven so balance patches ship without a client update, telemetry feeds every tuning decision, and the pixel-art style keeps production fast enough to iterate weekly.',
+        scope: ['Game design & balancing', 'Pixel art & animation', 'Game client development', 'Backend & telemetry', 'Live operations'],
+      },
+      designSystem: {
+        concept:
+          'Warm bakery colors on a midnight-blue night: crust orange and butter yellow for everything friendly, mold purple and jam red for everything hostile. Chunky 4px borders, hard shadows, and no rounded corners — the UI is part of the pixel world, not a layer floating above it.',
+        colors: [
+          { name: 'Crust Orange', hex: '#D4813F', role: 'Bread units & primary accents' },
+          { name: 'Butter Yellow', hex: '#F6C743', role: 'Buttons, coins & highlights' },
+          { name: 'Mold Purple', hex: '#8B5CF6', role: 'Enemies & danger states' },
+          { name: 'Midnight Blue', hex: '#0D0B1E', role: 'Night sky & base background' },
+        ],
+        typography: [
+          { family: 'Galmuri', usage: 'Korean & body text — an open-source Korean bitmap font that stays crisp at every scale' },
+          { family: 'Press Start 2P', usage: 'HUD, labels & headings — the classic arcade voice' },
+        ],
+        principles: [
+          { title: 'Readable at a glance', description: 'Every unit and enemy has one unmistakable silhouette and color, so even a crowded wave stays readable.' },
+          { title: 'Juicy, not noisy', description: 'Stepped animations, hit flashes, and screen shake give weight to every action without visual clutter.' },
+          { title: 'One thumb, one break', description: 'Placing and upgrading units works with a single thumb, and a full run fits into a coffee break.' },
+        ],
+      },
+      techStack: ['TypeScript', 'HTML5 Canvas', 'Pixel Art', 'Node.js', 'PostgreSQL', 'Cloud Hosting'],
+      deliverables: ['Game design', 'Pixel art & animation', 'Client & backend development', 'Live operations & analytics'],
+      links: [],
+    },
+    game: {
+      genre: 'Pixel-art defense',
+      platforms: ['Web (browser)', 'Mobile (planned)'],
+      players: 'Single player',
+      buildLabel: 'DEV BUILD',
+      pitch:
+        'The mold is at the gates! Grab your toast, hold the line, and keep the ovens warm until dawn.',
+      features: [
+        {
+          sprite: 'bakery',
+          title: 'Defend the Bakery',
+          description: 'Waves of pests march down the path toward the ovens. Place bread units, hold every lane, and survive until dawn.',
+        },
+        {
+          sprite: 'toastKnight',
+          title: 'A Bread Army',
+          description: 'Toast knights, baguette lancers, melon-bread guardians — each unit has a distinct role, upgrade path, and personality.',
+        },
+        {
+          sprite: 'moldBlob',
+          title: 'Escalating Waves',
+          description: 'Mold blobs, crumb ants, and bosses arrive in hand-tuned waves that get smarter, not just bigger.',
+        },
+        {
+          sprite: 'coin',
+          title: 'Bake to Earn',
+          description: 'Sell bread between waves to earn coins, then spend them on new units, upgrades, and oven improvements.',
+        },
+        {
+          sprite: 'heart',
+          title: 'Short, Replayable Runs',
+          description: 'A run fits into a coffee break. Daily challenges and leaderboards give you a reason to come back tomorrow.',
+        },
+        {
+          sprite: 'baker',
+          title: 'Live-operated',
+          description: 'New units, seasonal events, and balance patches ship continuously — the game is operated, not just released.',
+        },
+      ],
+      units: [
+        {
+          name: '식빵 기사',
+          nameEn: 'Toast Knight',
+          role: 'Frontline',
+          description: 'Reliable, cheap, and crunchy. Holds the lane while the rest of the bakery gets to work.',
+          sprite: 'toastKnight',
+          stats: { atk: 3, def: 3, spd: 3 },
+        },
+        {
+          name: '바게트 창병',
+          nameEn: 'Baguette Lancer',
+          role: 'Reach',
+          description: 'Long reach, high damage. Pierces through a whole line of mold in a single thrust.',
+          sprite: 'baguetteLancer',
+          stats: { atk: 4, def: 2, spd: 4 },
+        },
+        {
+          name: '멜론빵 수호자',
+          nameEn: 'Melon Bread Guardian',
+          role: 'Tank',
+          description: 'A thick, sugary crust soaks up hits. Slow, but nothing gets past it.',
+          sprite: 'melonGuardian',
+          stats: { atk: 2, def: 5, spd: 1 },
+        },
+      ],
+      enemies: [
+        {
+          name: '곰팡이',
+          nameEn: 'Mold Blob',
+          role: 'Swarm',
+          description: 'Spreads if ignored and splits into smaller blobs when hit — clear it fast.',
+          sprite: 'moldBlob',
+          stats: { atk: 2, def: 2, spd: 2 },
+        },
+        {
+          name: '부스러기 개미',
+          nameEn: 'Crumb Ant',
+          role: 'Rusher',
+          description: 'Tiny, fast, and never alone. Steals crumbs straight from your coin pile.',
+          sprite: 'crumbAnt',
+          stats: { atk: 1, def: 1, spd: 5 },
+        },
+      ],
+      operations: [
+        {
+          title: 'Balance patches',
+          description: 'Wave, unit, and economy data live on the server, so tuning ships without a client update.',
+        },
+        {
+          title: 'Seasonal events',
+          description: 'Limited-time waves, units, and bakery decorations keep every season fresh.',
+        },
+        {
+          title: 'Telemetry-driven tuning',
+          description: 'Per-wave win rates and unit pick rates inform every change we make.',
+        },
+        {
+          title: 'Player support',
+          description: 'Bug reports and feedback go straight to the team that builds the game.',
+        },
+      ],
+      roadmap: [
+        { phase: 'STAGE 1', title: 'Concept & design', description: 'Core loop, world, and the first three bread units.', done: true },
+        { phase: 'STAGE 2', title: 'Playable prototype', description: 'Pixel-art pass, HUD, economy, and the first boss wave.', done: false },
+        { phase: 'STAGE 3', title: 'Closed beta', description: 'Invite-only testing, telemetry, and balance tuning.', done: false },
+        { phase: 'STAGE 4', title: 'Web launch', description: 'Public release in the browser with daily challenges.', done: false },
+        { phase: 'STAGE 5', title: 'Mobile & live seasons', description: 'Mobile builds and the first seasonal event.', done: false },
+      ],
+    },
+  },
 ];
 
 // ─── Helpers ───
@@ -574,7 +814,15 @@ export function getAppProjectById(id: string): AppProject | undefined {
   return getAppProjects().find((p) => p.id === id);
 }
 
+export function getGameProjects(): GameProject[] {
+  return worksData.filter((p): p is GameProject => p.type === 'game');
+}
+
+export function getProjectStatus(project: WorkProject): ProjectStatus {
+  return project.status ?? 'live';
+}
+
 export function getCategories(): WorkCategory[] {
   const present = new Set(worksData.map((p) => p.type));
-  return (['web', 'app', 'design'] as WorkCategory[]).filter((c) => present.has(c));
+  return (['web', 'app', 'game', 'design'] as WorkCategory[]).filter((c) => present.has(c));
 }

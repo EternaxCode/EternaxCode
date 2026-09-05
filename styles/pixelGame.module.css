@@ -1,0 +1,368 @@
+/* ─── Pixel-art theme for game detail pages (빵어전) ───
+   Galmuri: Korean pixel font, SIL OFL 1.1 — https://github.com/quiple/galmuri
+   Press Start 2P is loaded globally in _document.tsx. */
+
+@font-face {
+  font-family: 'Galmuri11';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/Galmuri11.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Galmuri11';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/Galmuri11-Bold.woff2') format('woff2');
+}
+
+.root {
+  --px-bg: #0d0b1e;
+  --px-panel: #171233;
+  --px-panel2: #1f1a44;
+  --px-line: #342c6b;
+  --px-crust: #d4813f;
+  --px-dark-crust: #8f4c1f;
+  --px-butter: #f6c743;
+  --px-cream: #fff0c8;
+  --px-red: #e5484d;
+  --px-green: #7ee787;
+  --px-sky: #4cc9f0;
+  --px-mold: #8b5cf6;
+  --px-ink: #1b1226;
+
+  font-family: 'Galmuri11', 'Press Start 2P', ui-monospace, 'Courier New', monospace;
+  color: var(--px-cream);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+.pixelFont {
+  font-family: 'Press Start 2P', 'Galmuri11', ui-monospace, 'Courier New', monospace;
+}
+
+.galmuri {
+  font-family: 'Galmuri11', ui-monospace, 'Courier New', monospace;
+}
+
+/* ─── Chunky stepped boxes ─── */
+.box {
+  position: relative;
+  background: var(--px-panel);
+  border: 4px solid var(--px-ink);
+  box-shadow:
+    0 0 0 4px var(--px-line),
+    8px 8px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+.boxLight {
+  background: var(--px-panel2);
+}
+
+.boxAccent {
+  box-shadow:
+    0 0 0 4px var(--px-butter),
+    8px 8px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+.boxDanger {
+  box-shadow:
+    0 0 0 4px var(--px-red),
+    8px 8px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+.boxMold {
+  box-shadow:
+    0 0 0 4px var(--px-mold),
+    8px 8px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+.gridBg {
+  background-color: var(--px-panel);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── CRT screen ─── */
+.screen {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, #1d1748 0%, #0d0b1e 70%);
+  border: 6px solid #2a2350;
+  box-shadow:
+    0 0 0 4px #0d0b1e,
+    0 0 0 8px #3a3170,
+    0 0 80px rgba(139, 92, 246, 0.25),
+    12px 12px 0 0 rgba(0, 0, 0, 0.6);
+}
+
+.screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.045) 0px,
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ─── Title ─── */
+.title {
+  font-family: 'Galmuri11', 'Press Start 2P', ui-monospace, monospace;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--px-cream);
+  text-shadow:
+    4px 4px 0 var(--px-crust),
+    8px 8px 0 var(--px-ink);
+}
+
+.titleShadowSm {
+  text-shadow:
+    3px 3px 0 var(--px-crust),
+    6px 6px 0 var(--px-ink);
+}
+
+.hardShadow {
+  text-shadow: 3px 3px 0 var(--px-ink);
+}
+
+/* ─── Terrain ─── */
+.ground {
+  background-color: #8f4c1f;
+  background-image:
+    linear-gradient(45deg, #a65a26 25%, transparent 25%, transparent 75%, #a65a26 75%),
+    linear-gradient(45deg, #a65a26 25%, transparent 25%, transparent 75%, #a65a26 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  border-top: 4px solid var(--px-ink);
+}
+
+.grass {
+  height: 6px;
+  background: repeating-linear-gradient(to right, #7ee787 0 8px, #4ade80 8px 16px);
+  border-top: 2px solid var(--px-ink);
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  animation: twinkle 2.4s steps(2) infinite;
+}
+
+.divider {
+  height: 4px;
+  background: repeating-linear-gradient(to right, var(--px-line) 0 8px, transparent 8px 16px);
+}
+
+/* ─── Animations (stepped, like a low-fps sprite sheet) ─── */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.blink { animation: blink 1s steps(1) infinite; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.bob { animation: bob 0.8s steps(2) infinite; }
+
+@keyframes wobble {
+  0%, 100% { transform: translateY(0) scaleX(1); }
+  50% { transform: translateY(-3px) scaleX(1.06); }
+}
+.wobble { animation: wobble 0.7s steps(2) infinite; }
+
+@keyframes march {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marchTrack {
+  display: flex;
+  width: max-content;
+  animation: march 18s linear infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+@keyframes cursorDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+.cursor { animation: cursorDown 0.6s steps(1) infinite; }
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.85; }
+  94% { opacity: 1; }
+  97% { opacity: 0.9; }
+}
+.flicker { animation: flicker 6s steps(1) infinite; }
+
+/* ─── HUD / labels ─── */
+.hud {
+  font-family: 'Press Start 2P', 'Galmuri11', ui-monospace, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: 'Press Start 2P', 'Galmuri11', ui-monospace, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.35rem 0.55rem;
+  font-family: 'Galmuri11', ui-monospace, monospace;
+  font-size: 0.8rem;
+  line-height: 1;
+  color: var(--px-cream);
+  background: var(--px-panel2);
+  border: 2px solid var(--px-line);
+  box-shadow: 2px 2px 0 0 var(--px-ink);
+}
+
+/* ─── Stat bars ─── */
+.statBar {
+  display: flex;
+  gap: 3px;
+}
+.statSeg {
+  width: 12px;
+  height: 8px;
+  background: var(--px-line);
+  box-shadow: inset 0 0 0 1px var(--px-ink);
+}
+.statSegOn {
+  background: var(--px-green);
+}
+.statSegOnRed {
+  background: var(--px-red);
+}
+
+/* ─── Progress bar ─── */
+.progress {
+  height: 16px;
+  background: var(--px-ink);
+  border: 3px solid var(--px-line);
+  padding: 2px;
+}
+.progressFill {
+  height: 100%;
+  background: repeating-linear-gradient(to right, var(--px-butter) 0 8px, #e0ad2f 8px 12px);
+}
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.3rem;
+  font-family: 'Press Start 2P', 'Galmuri11', ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--px-ink);
+  background: var(--px-butter);
+  border: 4px solid var(--px-ink);
+  box-shadow: 4px 4px 0 0 var(--px-ink);
+  transition: transform 0.08s steps(1), box-shadow 0.08s steps(1);
+  cursor: pointer;
+}
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 var(--px-ink);
+}
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 var(--px-ink);
+}
+
+.btnGhost {
+  color: var(--px-cream);
+  background: var(--px-panel2);
+  border-color: var(--px-cream);
+  box-shadow: 4px 4px 0 0 var(--px-cream);
+}
+.btnGhost:hover {
+  box-shadow: 2px 2px 0 0 var(--px-cream);
+}
+.btnGhost:active {
+  box-shadow: 0 0 0 0 var(--px-cream);
+}
+
+.btnDisabled {
+  color: rgba(255, 240, 200, 0.55);
+  background: var(--px-line);
+  border-color: var(--px-ink);
+  box-shadow: 4px 4px 0 0 var(--px-ink);
+  cursor: not-allowed;
+}
+.btnDisabled:hover,
+.btnDisabled:active {
+  transform: none;
+  box-shadow: 4px 4px 0 0 var(--px-ink);
+}
+
+/* ─── Dialogue box (RPG text window) ─── */
+.dialog {
+  position: relative;
+  background: var(--px-ink);
+  border: 4px solid var(--px-cream);
+  box-shadow:
+    0 0 0 4px var(--px-ink),
+    0 0 0 6px var(--px-line);
+}
+
+.checkbox {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  background: var(--px-ink);
+  border: 3px solid var(--px-cream);
+  font-family: 'Press Start 2P', ui-monospace, monospace;
+  font-size: 0.6rem;
+  color: var(--px-green);
+}
+
+.swatch {
+  width: 100%;
+  height: 56px;
+  border: 4px solid var(--px-ink);
+  box-shadow: inset -6px -6px 0 0 rgba(0, 0, 0, 0.25), inset 6px 6px 0 0 rgba(255, 255, 255, 0.18);
+}
+
+.selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
