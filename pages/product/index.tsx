@@ -14,6 +14,7 @@ import {
   Smartphone,
   Server,
   ArrowRight,
+  Gamepad2,
 } from 'lucide-react';
 import SectionScroll from '@/components/SectionScroll';
 import StaggerContainer from '@/components/StaggerContainer';
@@ -198,13 +199,31 @@ export default function Product() {
             </StaggerItem>
 
             <StaggerItem>
-              <div className="flex justify-center mt-6">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-6">
                 <Link
                   href="/works"
                   className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
                 >
                   See products RAXI will manage
                   <ArrowRight className="w-3 h-3" />
+                </Link>
+                {/* 빵어전 — our own game, built & operated in-house */}
+                <Link
+                  href="/works/bbang-eonjeon"
+                  className="group inline-flex items-center gap-3 px-4 py-2 border-2 border-amber-300/40 bg-amber-400/10 text-amber-100 hover:bg-amber-400/20 hover:border-amber-300/70 transition-colors"
+                  style={{ boxShadow: '3px 3px 0 0 rgba(0,0,0,0.6)' }}
+                >
+                  <Gamepad2 className="w-4 h-4 text-amber-300 shrink-0" />
+                  <span className="text-sm">
+                    <span className="font-semibold">빵어전</span>
+                    <span className="text-amber-100/70"> — a pixel-art game we build &amp; operate</span>
+                  </span>
+                  <span
+                    className="text-[9px] tracking-wider text-amber-300 group-hover:translate-x-0.5 transition-transform shrink-0"
+                    style={{ fontFamily: "'Press Start 2P', monospace" }}
+                  >
+                    NEW ▶
+                  </span>
                 </Link>
               </div>
             </StaggerItem>

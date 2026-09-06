@@ -1,3 +1,81 @@
+import type { PixelSpriteKey } from '@/lib/pixelSprites';
+
+// ─── Lifecycle Status (shared by every project) ───
+
+export type ProjectStatus = 'live' | 'in-development' | 'discontinued';
+
+export const statusLabels: Record<ProjectStatus, string> = {
+  live: 'Live',
+  'in-development': 'In Development',
+  discontinued: 'Service Ended',
+};
+
+// ─── Content Types for Game Projects ───
+
+export interface GameStats {
+  /** 0–5 scale, rendered as segmented pixel bars. */
+  atk: number;
+  def: number;
+  spd: number;
+}
+
+export interface GameUnit {
+  name: string;
+  nameEn: string;
+  role: string;
+  description: string;
+  sprite: PixelSpriteKey;
+  stats: GameStats;
+}
+
+export interface GameFeature {
+  sprite: PixelSpriteKey;
+  title: string;
+  description: string;
+}
+
+export interface GameOperation {
+  title: string;
+  description: string;
+}
+
+export interface GameRoadmapItem {
+  phase: string;
+  title: string;
+  description: string;
+  done: boolean;
+}
+
+export interface GameStoreLink {
+  /** e.g. "App Store", "Google Play" */
+  label: string;
+  url: string;
+}
+
+export interface GameContent {
+  genre: string;
+  platforms: string[];
+  players: string;
+  /** Short build tag shown on the title screen, e.g. "DEV BUILD" or "VER 1.3.7". */
+  buildLabel: string;
+  /** Spoken by the baker NPC in the intro dialogue box. */
+  pitch: string;
+  /** Headline numbers shown on the title screen (e.g. 64 towers · 7 regions · 100 stages). */
+  stats?: { value: string; label: string }[];
+  features: GameFeature[];
+  units: GameUnit[];
+  /** Optional — omit when the game's enemies aren't public. */
+  enemies?: GameUnit[];
+  operations: GameOperation[];
+  roadmap: GameRoadmapItem[];
+  /** The "Press Start" button links here (official site or web build). */
+  playUrl?: string;
+  /** App store listings, shown as buttons under Press Start. */
+  stores?: GameStoreLink[];
+  /** Painterly key art from the game, shown framed on the detail page. */
+  keyArt?: { src: string; alt: string; caption: string };
+}
+
 // ─── Content Types for App Projects ───
 
 export interface SpecContent {
@@ -82,11 +160,12 @@ export interface CaseStudy {
 
 // ─── Categories ───
 
-export type WorkCategory = 'web' | 'app' | 'design';
+export type WorkCategory = 'web' | 'app' | 'game' | 'design';
 
 export const categoryLabels: Record<WorkCategory, string> = {
   web: 'Web',
   app: 'App',
+  game: 'Game',
   design: 'Design',
 };
 
@@ -102,6 +181,10 @@ interface WorkProjectBase {
   fallbackGradient: string;
   fallbackLabel: string;
   accentColor: string;
+  /** Defaults to 'live' when omitted. */
+  status?: ProjectStatus;
+  /** Shown alongside the status badge on the detail page (e.g. why a service ended). */
+  statusNote?: string;
   caseStudy: CaseStudy;
 }
 
@@ -123,7 +206,14 @@ export interface AppProject extends WorkProjectBase {
   privacy: PrivacyContent;
 }
 
-export type WorkProject = WebProject | AppProject | DesignProject;
+export interface GameProject extends WorkProjectBase {
+  type: 'game';
+  subtitle: string;
+  heroDescription: string;
+  game: GameContent;
+}
+
+export type WorkProject = WebProject | AppProject | GameProject | DesignProject;
 
 // ─── Data ───
 
@@ -230,19 +320,22 @@ export const worksData: WorkProject[] = [
     type: 'web',
     id: 'econalk',
     title: 'econalk.com',
-    url: 'https://econalk.com',
+    url: '#',
     description:
-      'An AI-powered news platform delivering economic insights in multiple languages. Real-time analysis with multilingual support.',
+      'An AI-powered news platform that delivered economic insights in multiple languages. The service has ended — this case study is kept as an archive.',
     tags: ['AI', 'News', 'Multi-language'],
     image: '/works/econalk.png',
     fallbackGradient: 'from-blue-900 via-indigo-800 to-purple-900',
     fallbackLabel: 'econalk',
     accentColor: 'rgba(99, 102, 241, 0.4)',
+    status: 'discontinued',
+    statusNote:
+      'Econalk has ended its service and econalk.com is no longer available. Thank you to everyone who read along — this page remains as an archive of the work.',
     caseStudy: {
       tagline: 'AI-generated economic insight, readable in any language.',
       overview: {
         summary:
-          'Econalk is an AI-powered news platform that analyzes economic events and delivers insights in multiple languages. The product combines automated content pipelines with an editorial-grade reading experience.',
+          'Econalk was an AI-powered news platform that analyzed economic events and delivered insights in multiple languages. The product combined automated content pipelines with an editorial-grade reading experience.',
         challenge:
           'AI-generated content platforms often feel low-trust. Econalk had to look and read like a credible publication while the content pipeline runs fully automated, across languages with very different typographic needs.',
         approach:
@@ -270,9 +363,7 @@ export const worksData: WorkProject[] = [
       },
       techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'LLM Pipeline', 'i18n'],
       deliverables: ['Editorial design system', 'Multilingual architecture', 'AI pipeline integration', 'Frontend development'],
-      links: [
-        { label: 'Live Website', url: 'https://econalk.com', description: 'Visit the production site' },
-      ],
+      links: [],
     },
   },
   {
@@ -558,6 +649,178 @@ export const worksData: WorkProject[] = [
       ],
     },
   },
+  {
+    type: 'game',
+    id: 'bbang-eonjeon',
+    title: '빵어전',
+    url: 'https://bbangeojeon.eternaxcode.com',
+    description:
+      'A tower defense that bakes warmth. Freshly baked bread defenders set out from 뚜신빵집 to protect a sleeping village — 64 bread towers, 7 regions, 100 stages. Live on iOS and Android, built and operated by EternaxCode.',
+    tags: ['Game', 'Tower Defense', 'iOS', 'Android'],
+    image: '/works/bbang-eonjeon.png',
+    fallbackGradient: 'from-amber-900 via-orange-900 to-stone-900',
+    fallbackLabel: '빵어전',
+    accentColor: 'rgba(246, 199, 67, 0.4)',
+    status: 'live',
+    statusNote:
+      'Live on the App Store and Google Play. Designed, built, and operated in-house by EternaxCode — patch notes, guides, records, and the community live at the official HQ site.',
+    subtitle: '온기를 굽는 타워디펜스 — a tower defense that bakes warmth.',
+    heroDescription:
+      '빵어전 (Bbang-eojeon) is a pun on 방어전, "defense battle", with 빵 — bread. While the village of 밀보라 sleeps, freshly baked bread defenders set out from 뚜신빵집 to keep its warmth alive. Drop dough, add ingredients, and bake your own squad from 64 bread towers across 7 regions and 100 stages. It is EternaxCode\'s first original game, and we design, build, and operate it ourselves.',
+    caseStudy: {
+      tagline: 'Bread defenders vs. the night — a pixel tower defense we build and operate ourselves.',
+      overview: {
+        summary:
+          '빵어전 is EternaxCode\'s first original game and the first product we run as a live service end-to-end. Players bake bread towers from dough and ingredients, place them along the path to 뚜신빵집, and guard the sleeping village through 7 regions and 100 stages. The game, its guild and records backend, the official HQ site, and live operations are all built in-house.',
+        challenge:
+          'A tower defense lives on its balance: 64 towers and their combinations have to stay meaningful from the first night to the boss fights, and every patch has to land without disrupting guild play or the records ledger.',
+        approach:
+          'We ship it like a product with a live roadmap. Towers, waves, and the economy are data-driven so balance patches ship fast; guilds and records run on a shared backend; and the official HQ site carries the field guide, patch notes, and community so players always know what changed and why.',
+        scope: ['Game design & balancing', 'Pixel art & animation', 'iOS & Android client', 'Guilds, records & live-ops backend', 'Official HQ site & community'],
+      },
+      designSystem: {
+        concept:
+          'Warm bakery colors against the night: crust, cream, and ember for everything friendly, deep dusk blues for the sleeping village. Chunky outlines, hard shadows, and no rounded corners — the UI belongs to the same pixel world as the breads.',
+        colors: [
+          { name: 'Crust', hex: '#D9975B', role: 'Bread defenders & primary accents' },
+          { name: 'Cream', hex: '#F9EBC6', role: 'Bread body, text & highlights' },
+          { name: 'Ember', hex: '#F2A950', role: '뚜신\'s flame, buttons & coins' },
+          { name: 'Dusk', hex: '#0D0B1E', role: 'Night sky & base background' },
+        ],
+        typography: [
+          { family: 'Galmuri', usage: 'Korean & body text — an open-source Korean bitmap font that stays crisp at every scale' },
+          { family: 'Press Start 2P', usage: 'HUD, labels & headings — the classic arcade voice' },
+        ],
+        principles: [
+          { title: 'Readable at a glance', description: 'Each bread has one unmistakable silhouette, so a crowded night stays readable on a phone screen.' },
+          { title: 'Warmth over threat', description: 'The enemy is the cold and the fog; the tone stays cozy even when the waves get hard.' },
+          { title: 'One thumb, one night', description: 'Placing and upgrading works with a single thumb, and a stage fits into a short break.' },
+        ],
+      },
+      techStack: ['iOS', 'Android', 'Official HQ site', 'Guild & records backend', 'Live Ops', 'Pixel Art'],
+      deliverables: ['Game design', 'Pixel art & animation', 'Mobile client development', 'Backend, guilds & records', 'Official HQ site', 'Live operations'],
+      links: [
+        { label: 'Official HQ', url: 'https://bbangeojeon.eternaxcode.com', description: 'Field guide, guides, records, community & patch notes' },
+        { label: 'App Store', url: 'https://apps.apple.com/app/id6805946937', description: 'Download for iPhone & iPad' },
+        { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.bbangeojeon', description: 'Download for Android' },
+      ],
+    },
+    game: {
+      genre: 'Tower defense',
+      platforms: ['iOS', 'Android'],
+      players: 'Single player · Guilds',
+      buildLabel: 'VER 1.3.7',
+      pitch:
+        '마을이 잠든 사이, 갓 구운 빵들의 모험이 시작된다. While the village sleeps, the freshly baked breads set out on their adventure.',
+      stats: [
+        { value: '64', label: 'Bread towers' },
+        { value: '7', label: 'Regions' },
+        { value: '100', label: 'Stages' },
+      ],
+      features: [
+        {
+          sprite: 'bakery',
+          title: 'Guard 뚜신빵집',
+          description: 'Night falls on 밀보라 village. Place bread towers along the path and keep the bakery\'s warmth alive until dawn.',
+        },
+        {
+          sprite: 'tussin',
+          title: '64 Bread Towers',
+          description: 'From 뚜신, the village\'s small ember, to 크로와, 바게트 경, and 도나 — every bread defends in its own way. All 64 are in the field guide.',
+        },
+        {
+          sprite: 'croissant',
+          title: 'Bake to Combine',
+          description: 'Drop dough, add ingredients, bake. Which combination you bake decides how tonight\'s defense plays out.',
+        },
+        {
+          sprite: 'dona',
+          title: '7 Regions, 100 Stages',
+          description: 'Light up fog-covered villages one by one and meet new companions beyond the bakery alley — all the way to the bosses.',
+        },
+        {
+          sprite: 'baker',
+          title: 'Guilds & the Village Ledger',
+          description: 'Join a guild, climb the records ledger, and push the endless oven (무한 화덕) for high scores.',
+        },
+        {
+          sprite: 'coin',
+          title: 'Start as a Guest',
+          description: 'No account needed to play tonight. Link one later to keep the records that matter safe.',
+        },
+      ],
+      // Stat bars are illustrative (0–5 scale); exact numbers live in the in-game field guide.
+      units: [
+        {
+          name: '뚜신',
+          nameEn: 'Tussin',
+          role: 'Village ember',
+          description: 'The small flame that brings the bakery\'s warmth back to life. Where 뚜신 stands, the night is a little less cold.',
+          sprite: 'tussin',
+          stats: { atk: 2, def: 3, spd: 3 },
+        },
+        {
+          name: '크로와',
+          nameEn: 'Croissant',
+          role: 'Crispy crescent',
+          description: 'Courage baked in layers. A sturdy front-liner with a flaky, golden shell.',
+          sprite: 'croissant',
+          stats: { atk: 3, def: 4, spd: 2 },
+        },
+        {
+          name: '바게트 경',
+          nameEn: 'Sir Baguette',
+          role: 'Long reach',
+          description: 'Always at the very front, guarding the alley with a long, steady heart.',
+          sprite: 'baguette',
+          stats: { atk: 4, def: 2, spd: 4 },
+        },
+        {
+          name: '도나',
+          nameEn: 'Dona',
+          role: 'Sweet support',
+          description: 'Warmth that spreads in a circle. Defense is sweeter when you\'re together.',
+          sprite: 'dona',
+          stats: { atk: 2, def: 2, spd: 3 },
+        },
+      ],
+      operations: [
+        {
+          title: 'Patch notes',
+          description: 'Regular production patches with public release logs — 1.3.7 made guild and record results load faster and kept the ledgers cleanly separated.',
+        },
+        {
+          title: 'Guilds & records',
+          description: 'A shared ledger for weekly and seasonal records, guild play, and the endless-oven leaderboard.',
+        },
+        {
+          title: 'Guides & community',
+          description: 'The official HQ site hosts the bread field guide, strategy cards from beginners to boss fights, and the community square.',
+        },
+        {
+          title: 'Player support',
+          description: 'Reports and feedback go straight to the team that builds the game, and fixes ship in the next patch.',
+        },
+      ],
+      roadmap: [
+        { phase: 'STAGE 1', title: 'Concept & prototype', description: 'Core loop, 뚜신빵집, and the first bread defenders.', done: true },
+        { phase: 'STAGE 2', title: 'Launch on iOS & Android', description: '64 bread towers, 7 regions, 100 stages.', done: true },
+        { phase: 'STAGE 3', title: 'Official HQ site', description: 'Field guide, guides, records, patch notes, and community.', done: true },
+        { phase: 'STAGE 4', title: 'Guilds & seasonal records', description: 'Guild play and the village ledger, tuned patch by patch.', done: true },
+        { phase: 'STAGE 5', title: 'Next adventures', description: 'New breads, regions, and events — announced first in the patch notes.', done: false },
+      ],
+      playUrl: 'https://bbangeojeon.eternaxcode.com',
+      stores: [
+        { label: 'App Store', url: 'https://apps.apple.com/app/id6805946937' },
+        { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.bbangeojeon' },
+      ],
+      keyArt: {
+        src: '/works/bbang-eonjeon/dawn-bakery.webp',
+        alt: '새벽의 숲속 뚜신빵집과 빵정령 수비대',
+        caption: '밀보라 마을의 새벽, 뚜신빵집 — key art from the official HQ site',
+      },
+    },
+  },
 ];
 
 // ─── Helpers ───
@@ -574,7 +837,15 @@ export function getAppProjectById(id: string): AppProject | undefined {
   return getAppProjects().find((p) => p.id === id);
 }
 
+export function getGameProjects(): GameProject[] {
+  return worksData.filter((p): p is GameProject => p.type === 'game');
+}
+
+export function getProjectStatus(project: WorkProject): ProjectStatus {
+  return project.status ?? 'live';
+}
+
 export function getCategories(): WorkCategory[] {
   const present = new Set(worksData.map((p) => p.type));
-  return (['web', 'app', 'design'] as WorkCategory[]).filter((c) => present.has(c));
+  return (['web', 'app', 'game', 'design'] as WorkCategory[]).filter((c) => present.has(c));
 }

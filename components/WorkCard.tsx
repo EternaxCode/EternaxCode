@@ -6,15 +6,28 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import type { WorkProject } from '@/lib/worksData';
-import { categoryLabels } from '@/lib/worksData';
+import { categoryLabels, getProjectStatus, statusLabels } from '@/lib/worksData';
 
 interface WorkCardProps {
   project: WorkProject;
 }
 
+const statusBadgeClass = {
+  live: '',
+  'in-development': 'bg-amber-400/30 border-amber-200/40 text-amber-50',
+  discontinued: 'bg-red-500/40 border-red-200/40 text-red-50',
+} as const;
+
 export default function WorkCard({ project }: WorkCardProps) {
   const [imgError, setImgError] = useState(false);
   const showImage = project.image && !imgError;
+  const status = getProjectStatus(project);
+  const isDiscontinued = status === 'discontinued';
+  const hoverLabel = isDiscontinued
+    ? 'View Archive'
+    : project.type === 'game'
+      ? 'View Game'
+      : 'View Case Study';
 
   return (
     <Link href={`/works/${project.id}`} className="block h-full">
@@ -33,7 +46,9 @@ export default function WorkCard({ project }: WorkCardProps) {
               src={project.image!}
               alt={project.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                isDiscontinued ? 'grayscale opacity-60' : ''
+              }`}
               unoptimized
               onError={() => setImgError(true)}
             />
@@ -52,10 +67,19 @@ export default function WorkCard({ project }: WorkCardProps) {
             {categoryLabels[project.type]}
           </span>
 
+          {/* Status badge (only when not live) */}
+          {status !== 'live' && (
+            <span
+              className={`absolute top-3 right-3 text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full backdrop-blur-sm border ${statusBadgeClass[status]}`}
+            >
+              {statusLabels[status]}
+            </span>
+          )}
+
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
             <span className="inline-flex items-center gap-2 text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              View Case Study
+              {hoverLabel}
               <ArrowRight size={16} />
             </span>
           </div>
