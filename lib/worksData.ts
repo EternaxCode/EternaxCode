@@ -46,21 +46,34 @@ export interface GameRoadmapItem {
   done: boolean;
 }
 
+export interface GameStoreLink {
+  /** e.g. "App Store", "Google Play" */
+  label: string;
+  url: string;
+}
+
 export interface GameContent {
   genre: string;
   platforms: string[];
   players: string;
-  /** Short build tag shown on the title screen, e.g. "DEV BUILD". */
+  /** Short build tag shown on the title screen, e.g. "DEV BUILD" or "VER 1.3.7". */
   buildLabel: string;
   /** Spoken by the baker NPC in the intro dialogue box. */
   pitch: string;
+  /** Headline numbers shown on the title screen (e.g. 64 towers · 7 regions · 100 stages). */
+  stats?: { value: string; label: string }[];
   features: GameFeature[];
   units: GameUnit[];
-  enemies: GameUnit[];
+  /** Optional — omit when the game's enemies aren't public. */
+  enemies?: GameUnit[];
   operations: GameOperation[];
   roadmap: GameRoadmapItem[];
-  /** Set once the game is playable; the "Press Start" button links here. */
+  /** The "Press Start" button links here (official site or web build). */
   playUrl?: string;
+  /** App store listings, shown as buttons under Press Start. */
+  stores?: GameStoreLink[];
+  /** Painterly key art from the game, shown framed on the detail page. */
+  keyArt?: { src: string; alt: string; caption: string };
 }
 
 // ─── Content Types for App Projects ───
@@ -640,162 +653,172 @@ export const worksData: WorkProject[] = [
     type: 'game',
     id: 'bbang-eonjeon',
     title: '빵어전',
-    url: '#',
+    url: 'https://bbangeojeon.eternaxcode.com',
     description:
-      'A pixel-art bread defense game built and operated by EternaxCode. Rally an army of bread to hold the bakery against waves of mold and crumb-hungry pests.',
-    tags: ['Game', 'Pixel Art', 'Defense'],
+      'A tower defense that bakes warmth. Freshly baked bread defenders set out from 뚜신빵집 to protect a sleeping village — 64 bread towers, 7 regions, 100 stages. Live on iOS and Android, built and operated by EternaxCode.',
+    tags: ['Game', 'Tower Defense', 'iOS', 'Android'],
     image: '/works/bbang-eonjeon.png',
     fallbackGradient: 'from-amber-900 via-orange-900 to-stone-900',
     fallbackLabel: '빵어전',
     accentColor: 'rgba(246, 199, 67, 0.4)',
-    status: 'in-development',
+    status: 'live',
     statusNote:
-      'In development — designed, built, and operated in-house by EternaxCode. Release channels will be announced here first.',
-    subtitle: '빵집을 지켜라! Rally your bread and hold the bakery until dawn.',
+      'Live on the App Store and Google Play. Designed, built, and operated in-house by EternaxCode — patch notes, guides, records, and the community live at the official HQ site.',
+    subtitle: '온기를 굽는 타워디펜스 — a tower defense that bakes warmth.',
     heroDescription:
-      '빵어전 (Bbang-eonjeon) is a pun on 방어전, "defense battle", with 빵 — bread. It is EternaxCode\'s first original game: a pixel-art defense game where toast knights, baguette lancers, and melon-bread guardians hold the line against mold and ants. We design it, build it, and run it as a live service ourselves.',
+      '빵어전 (Bbang-eojeon) is a pun on 방어전, "defense battle", with 빵 — bread. While the village of 밀보라 sleeps, freshly baked bread defenders set out from 뚜신빵집 to keep its warmth alive. Drop dough, add ingredients, and bake your own squad from 64 bread towers across 7 regions and 100 stages. It is EternaxCode\'s first original game, and we design, build, and operate it ourselves.',
     caseStudy: {
-      tagline: 'Bread vs. mold. A pixel-art defense game we build and operate ourselves.',
+      tagline: 'Bread defenders vs. the night — a pixel tower defense we build and operate ourselves.',
       overview: {
         summary:
-          '빵어전 is EternaxCode\'s first original game and the first product we operate as a live service end-to-end. Players place bread units along the path to the bakery and survive escalating waves of mold, ants, and other crumb-hungry pests. Every part — game design, pixel art, client, backend, and live operations — is built in-house.',
+          '빵어전 is EternaxCode\'s first original game and the first product we run as a live service end-to-end. Players bake bread towers from dough and ingredients, place them along the path to 뚜신빵집, and guard the sleeping village through 7 regions and 100 stages. The game, its guild and records backend, the official HQ site, and live operations are all built in-house.',
         challenge:
-          'A defense game lives on its balance and pacing: too easy is boring, too hard is frustrating, and every new unit or enemy shifts the curve. Operating a game also means shipping updates continuously without breaking what players already love.',
+          'A tower defense lives on its balance: 64 towers and their combinations have to stay meaningful from the first night to the boss fights, and every patch has to land without disrupting guild play or the records ledger.',
         approach:
-          'We treat the game like a product with a live roadmap. Waves, units, and the economy are data-driven so balance patches ship without a client update, telemetry feeds every tuning decision, and the pixel-art style keeps production fast enough to iterate weekly.',
-        scope: ['Game design & balancing', 'Pixel art & animation', 'Game client development', 'Backend & telemetry', 'Live operations'],
+          'We ship it like a product with a live roadmap. Towers, waves, and the economy are data-driven so balance patches ship fast; guilds and records run on a shared backend; and the official HQ site carries the field guide, patch notes, and community so players always know what changed and why.',
+        scope: ['Game design & balancing', 'Pixel art & animation', 'iOS & Android client', 'Guilds, records & live-ops backend', 'Official HQ site & community'],
       },
       designSystem: {
         concept:
-          'Warm bakery colors on a midnight-blue night: crust orange and butter yellow for everything friendly, mold purple and jam red for everything hostile. Chunky 4px borders, hard shadows, and no rounded corners — the UI is part of the pixel world, not a layer floating above it.',
+          'Warm bakery colors against the night: crust, cream, and ember for everything friendly, deep dusk blues for the sleeping village. Chunky outlines, hard shadows, and no rounded corners — the UI belongs to the same pixel world as the breads.',
         colors: [
-          { name: 'Crust Orange', hex: '#D4813F', role: 'Bread units & primary accents' },
-          { name: 'Butter Yellow', hex: '#F6C743', role: 'Buttons, coins & highlights' },
-          { name: 'Mold Purple', hex: '#8B5CF6', role: 'Enemies & danger states' },
-          { name: 'Midnight Blue', hex: '#0D0B1E', role: 'Night sky & base background' },
+          { name: 'Crust', hex: '#D9975B', role: 'Bread defenders & primary accents' },
+          { name: 'Cream', hex: '#F9EBC6', role: 'Bread body, text & highlights' },
+          { name: 'Ember', hex: '#F2A950', role: '뚜신\'s flame, buttons & coins' },
+          { name: 'Dusk', hex: '#0D0B1E', role: 'Night sky & base background' },
         ],
         typography: [
           { family: 'Galmuri', usage: 'Korean & body text — an open-source Korean bitmap font that stays crisp at every scale' },
           { family: 'Press Start 2P', usage: 'HUD, labels & headings — the classic arcade voice' },
         ],
         principles: [
-          { title: 'Readable at a glance', description: 'Every unit and enemy has one unmistakable silhouette and color, so even a crowded wave stays readable.' },
-          { title: 'Juicy, not noisy', description: 'Stepped animations, hit flashes, and screen shake give weight to every action without visual clutter.' },
-          { title: 'One thumb, one break', description: 'Placing and upgrading units works with a single thumb, and a full run fits into a coffee break.' },
+          { title: 'Readable at a glance', description: 'Each bread has one unmistakable silhouette, so a crowded night stays readable on a phone screen.' },
+          { title: 'Warmth over threat', description: 'The enemy is the cold and the fog; the tone stays cozy even when the waves get hard.' },
+          { title: 'One thumb, one night', description: 'Placing and upgrading works with a single thumb, and a stage fits into a short break.' },
         ],
       },
-      techStack: ['TypeScript', 'HTML5 Canvas', 'Pixel Art', 'Node.js', 'PostgreSQL', 'Cloud Hosting'],
-      deliverables: ['Game design', 'Pixel art & animation', 'Client & backend development', 'Live operations & analytics'],
-      links: [],
+      techStack: ['iOS', 'Android', 'Official HQ site', 'Guild & records backend', 'Live Ops', 'Pixel Art'],
+      deliverables: ['Game design', 'Pixel art & animation', 'Mobile client development', 'Backend, guilds & records', 'Official HQ site', 'Live operations'],
+      links: [
+        { label: 'Official HQ', url: 'https://bbangeojeon.eternaxcode.com', description: 'Field guide, guides, records, community & patch notes' },
+        { label: 'App Store', url: 'https://apps.apple.com/app/id6805946937', description: 'Download for iPhone & iPad' },
+        { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.bbangeojeon', description: 'Download for Android' },
+      ],
     },
     game: {
-      genre: 'Pixel-art defense',
-      platforms: ['Web (browser)', 'Mobile (planned)'],
-      players: 'Single player',
-      buildLabel: 'DEV BUILD',
+      genre: 'Tower defense',
+      platforms: ['iOS', 'Android'],
+      players: 'Single player · Guilds',
+      buildLabel: 'VER 1.3.7',
       pitch:
-        'The mold is at the gates! Grab your toast, hold the line, and keep the ovens warm until dawn.',
+        '마을이 잠든 사이, 갓 구운 빵들의 모험이 시작된다. While the village sleeps, the freshly baked breads set out on their adventure.',
+      stats: [
+        { value: '64', label: 'Bread towers' },
+        { value: '7', label: 'Regions' },
+        { value: '100', label: 'Stages' },
+      ],
       features: [
         {
           sprite: 'bakery',
-          title: 'Defend the Bakery',
-          description: 'Waves of pests march down the path toward the ovens. Place bread units, hold every lane, and survive until dawn.',
+          title: 'Guard 뚜신빵집',
+          description: 'Night falls on 밀보라 village. Place bread towers along the path and keep the bakery\'s warmth alive until dawn.',
         },
         {
-          sprite: 'toastKnight',
-          title: 'A Bread Army',
-          description: 'Toast knights, baguette lancers, melon-bread guardians — each unit has a distinct role, upgrade path, and personality.',
+          sprite: 'tussin',
+          title: '64 Bread Towers',
+          description: 'From 뚜신, the village\'s small ember, to 크로와, 바게트 경, and 도나 — every bread defends in its own way. All 64 are in the field guide.',
         },
         {
-          sprite: 'moldBlob',
-          title: 'Escalating Waves',
-          description: 'Mold blobs, crumb ants, and bosses arrive in hand-tuned waves that get smarter, not just bigger.',
+          sprite: 'croissant',
+          title: 'Bake to Combine',
+          description: 'Drop dough, add ingredients, bake. Which combination you bake decides how tonight\'s defense plays out.',
         },
         {
-          sprite: 'coin',
-          title: 'Bake to Earn',
-          description: 'Sell bread between waves to earn coins, then spend them on new units, upgrades, and oven improvements.',
-        },
-        {
-          sprite: 'heart',
-          title: 'Short, Replayable Runs',
-          description: 'A run fits into a coffee break. Daily challenges and leaderboards give you a reason to come back tomorrow.',
+          sprite: 'dona',
+          title: '7 Regions, 100 Stages',
+          description: 'Light up fog-covered villages one by one and meet new companions beyond the bakery alley — all the way to the bosses.',
         },
         {
           sprite: 'baker',
-          title: 'Live-operated',
-          description: 'New units, seasonal events, and balance patches ship continuously — the game is operated, not just released.',
+          title: 'Guilds & the Village Ledger',
+          description: 'Join a guild, climb the records ledger, and push the endless oven (무한 화덕) for high scores.',
+        },
+        {
+          sprite: 'coin',
+          title: 'Start as a Guest',
+          description: 'No account needed to play tonight. Link one later to keep the records that matter safe.',
         },
       ],
+      // Stat bars are illustrative (0–5 scale); exact numbers live in the in-game field guide.
       units: [
         {
-          name: '식빵 기사',
-          nameEn: 'Toast Knight',
-          role: 'Frontline',
-          description: 'Reliable, cheap, and crunchy. Holds the lane while the rest of the bakery gets to work.',
-          sprite: 'toastKnight',
-          stats: { atk: 3, def: 3, spd: 3 },
+          name: '뚜신',
+          nameEn: 'Tussin',
+          role: 'Village ember',
+          description: 'The small flame that brings the bakery\'s warmth back to life. Where 뚜신 stands, the night is a little less cold.',
+          sprite: 'tussin',
+          stats: { atk: 2, def: 3, spd: 3 },
         },
         {
-          name: '바게트 창병',
-          nameEn: 'Baguette Lancer',
-          role: 'Reach',
-          description: 'Long reach, high damage. Pierces through a whole line of mold in a single thrust.',
-          sprite: 'baguetteLancer',
+          name: '크로와',
+          nameEn: 'Croissant',
+          role: 'Crispy crescent',
+          description: 'Courage baked in layers. A sturdy front-liner with a flaky, golden shell.',
+          sprite: 'croissant',
+          stats: { atk: 3, def: 4, spd: 2 },
+        },
+        {
+          name: '바게트 경',
+          nameEn: 'Sir Baguette',
+          role: 'Long reach',
+          description: 'Always at the very front, guarding the alley with a long, steady heart.',
+          sprite: 'baguette',
           stats: { atk: 4, def: 2, spd: 4 },
         },
         {
-          name: '멜론빵 수호자',
-          nameEn: 'Melon Bread Guardian',
-          role: 'Tank',
-          description: 'A thick, sugary crust soaks up hits. Slow, but nothing gets past it.',
-          sprite: 'melonGuardian',
-          stats: { atk: 2, def: 5, spd: 1 },
-        },
-      ],
-      enemies: [
-        {
-          name: '곰팡이',
-          nameEn: 'Mold Blob',
-          role: 'Swarm',
-          description: 'Spreads if ignored and splits into smaller blobs when hit — clear it fast.',
-          sprite: 'moldBlob',
-          stats: { atk: 2, def: 2, spd: 2 },
-        },
-        {
-          name: '부스러기 개미',
-          nameEn: 'Crumb Ant',
-          role: 'Rusher',
-          description: 'Tiny, fast, and never alone. Steals crumbs straight from your coin pile.',
-          sprite: 'crumbAnt',
-          stats: { atk: 1, def: 1, spd: 5 },
+          name: '도나',
+          nameEn: 'Dona',
+          role: 'Sweet support',
+          description: 'Warmth that spreads in a circle. Defense is sweeter when you\'re together.',
+          sprite: 'dona',
+          stats: { atk: 2, def: 2, spd: 3 },
         },
       ],
       operations: [
         {
-          title: 'Balance patches',
-          description: 'Wave, unit, and economy data live on the server, so tuning ships without a client update.',
+          title: 'Patch notes',
+          description: 'Regular production patches with public release logs — 1.3.7 made guild and record results load faster and kept the ledgers cleanly separated.',
         },
         {
-          title: 'Seasonal events',
-          description: 'Limited-time waves, units, and bakery decorations keep every season fresh.',
+          title: 'Guilds & records',
+          description: 'A shared ledger for weekly and seasonal records, guild play, and the endless-oven leaderboard.',
         },
         {
-          title: 'Telemetry-driven tuning',
-          description: 'Per-wave win rates and unit pick rates inform every change we make.',
+          title: 'Guides & community',
+          description: 'The official HQ site hosts the bread field guide, strategy cards from beginners to boss fights, and the community square.',
         },
         {
           title: 'Player support',
-          description: 'Bug reports and feedback go straight to the team that builds the game.',
+          description: 'Reports and feedback go straight to the team that builds the game, and fixes ship in the next patch.',
         },
       ],
       roadmap: [
-        { phase: 'STAGE 1', title: 'Concept & design', description: 'Core loop, world, and the first three bread units.', done: true },
-        { phase: 'STAGE 2', title: 'Playable prototype', description: 'Pixel-art pass, HUD, economy, and the first boss wave.', done: false },
-        { phase: 'STAGE 3', title: 'Closed beta', description: 'Invite-only testing, telemetry, and balance tuning.', done: false },
-        { phase: 'STAGE 4', title: 'Web launch', description: 'Public release in the browser with daily challenges.', done: false },
-        { phase: 'STAGE 5', title: 'Mobile & live seasons', description: 'Mobile builds and the first seasonal event.', done: false },
+        { phase: 'STAGE 1', title: 'Concept & prototype', description: 'Core loop, 뚜신빵집, and the first bread defenders.', done: true },
+        { phase: 'STAGE 2', title: 'Launch on iOS & Android', description: '64 bread towers, 7 regions, 100 stages.', done: true },
+        { phase: 'STAGE 3', title: 'Official HQ site', description: 'Field guide, guides, records, patch notes, and community.', done: true },
+        { phase: 'STAGE 4', title: 'Guilds & seasonal records', description: 'Guild play and the village ledger, tuned patch by patch.', done: true },
+        { phase: 'STAGE 5', title: 'Next adventures', description: 'New breads, regions, and events — announced first in the patch notes.', done: false },
       ],
+      playUrl: 'https://bbangeojeon.eternaxcode.com',
+      stores: [
+        { label: 'App Store', url: 'https://apps.apple.com/app/id6805946937' },
+        { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.bbangeojeon' },
+      ],
+      keyArt: {
+        src: '/works/bbang-eonjeon/dawn-bakery.webp',
+        alt: '새벽의 숲속 뚜신빵집과 빵정령 수비대',
+        caption: '밀보라 마을의 새벽, 뚜신빵집 — key art from the official HQ site',
+      },
     },
   },
 ];

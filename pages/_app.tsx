@@ -26,8 +26,12 @@ const Starfield = dynamic(
   { ssr: false }
 );
 
+/** Routes rendered without the site chrome (nav, footer, music) — e.g. the Instagram bio link page. */
+const CHROMELESS_ROUTES = ['/links'];
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const chromeless = CHROMELESS_ROUTES.includes(router.pathname);
 
   const getThemeForPath = (pathname: string): string => {
     if (pathname === '/') return UI.THEME.default;
@@ -80,7 +84,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Starfield />
       </div>
-      <Navigation />
+      {!chromeless && <Navigation />}
 
       {/* 메인 콘텐츠 영역 */}
       <AnimatePresence mode="wait">
@@ -110,17 +114,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             opacity: { duration: 0.4 },
             filter: { duration: 0.3 }
           }}
-          className="min-h-screen pb-20"
+          className={chromeless ? 'min-h-screen' : 'min-h-screen pb-20'}
         >
           <Component {...pageProps} />
         </motion.main>
       </AnimatePresence>
 
       {/* 고정된 Footer - 화면 하단에 고정 */}
-      <Footer className="fixed bottom-0 left-0 right-0 z-20" />
+      {!chromeless && <Footer className="fixed bottom-0 left-0 right-0 z-20" />}
 
       {/* 배경음악 컨트롤 */}
-      <BackgroundMusic />
+      {!chromeless && <BackgroundMusic />}
     </>
   );
 }

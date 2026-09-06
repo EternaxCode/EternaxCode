@@ -1,12 +1,15 @@
 'use client';
 
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import StaggerContainer, { StaggerItem } from '@/components/StaggerContainer';
 import PixelSprite from '@/components/PixelSprite';
 import { getProjectStatus, statusLabels } from '@/lib/worksData';
 import type { GameProject, GameUnit } from '@/lib/worksData';
+import { PIXEL_SPRITES, spriteSize } from '@/lib/pixelSprites';
+import type { PixelSpriteKey } from '@/lib/pixelSprites';
 import px from '@/styles/pixelGame.module.css';
 
 interface Props {
@@ -21,7 +24,11 @@ const STARS = Array.from({ length: 40 }, (_, i) => ({
   size: i % 7 === 0 ? 4 : i % 3 === 0 ? 2 : 3,
 }));
 
-const HEROES = ['melonGuardian', 'toastKnight', 'baguetteLancer'] as const;
+/** Scale factor that fits a sprite into a square box of `box` px (rounded to 0.5). */
+function fitScale(sprite: PixelSpriteKey, box: number): number {
+  const { width, height } = spriteSize(PIXEL_SPRITES[sprite].rows);
+  return Math.max(1, Math.floor(Math.min(box / width, box / height) * 2) / 2);
+}
 
 function Section({
   index,
@@ -68,19 +75,17 @@ function StatBar({ label, value, danger }: { label: string; value: number; dange
 function UnitCard({ unit, enemy = false }: { unit: GameUnit; enemy?: boolean }) {
   return (
     <div className={`${px.box} ${enemy ? px.boxMold : px.boxAccent} h-full p-5 flex flex-col`}>
-      <div className="flex items-start gap-4">
-        <div className={`${px.gridBg} shrink-0 border-4 border-[#1b1226] p-2`}>
-          <span className={enemy ? px.wobble : px.bob} style={{ display: 'block' }}>
-            <PixelSprite sprite={unit.sprite} scale={4} flip={enemy} title={unit.nameEn} />
-          </span>
-        </div>
-        <div className="min-w-0">
-          <p className={`${px.galmuri} text-xl font-bold leading-tight`}>{unit.name}</p>
-          <p className={`${px.pixelFont} text-[9px] mt-2 ${enemy ? 'text-[#c4b5fd]' : 'text-[#f6c743]'}`}>
-            {unit.nameEn.toUpperCase()}
-          </p>
-          <span className={`${px.tag} mt-3`}>{unit.role}</span>
-        </div>
+      <div className={`${px.gridBg} border-4 border-[#1b1226] h-28 flex items-end justify-center p-2`}>
+        <span className={enemy ? px.wobble : px.bob} style={{ display: 'block' }}>
+          <PixelSprite sprite={unit.sprite} scale={fitScale(unit.sprite, 88)} flip={enemy} title={unit.nameEn} />
+        </span>
+      </div>
+      <div className="mt-4">
+        <p className={`${px.galmuri} text-xl font-bold leading-tight`}>{unit.name}</p>
+        <p className={`${px.pixelFont} text-[9px] mt-2 ${enemy ? 'text-[#c4b5fd]' : 'text-[#f6c743]'}`}>
+          {unit.nameEn.toUpperCase()}
+        </p>
+        <span className={`${px.tag} mt-3`}>{unit.role}</span>
       </div>
       <p className={`${px.galmuri} text-base text-[#fff0c8]/75 leading-relaxed mt-4 flex-1`}>
         {unit.description}
@@ -109,8 +114,21 @@ export default function GameDetail({ project }: Props) {
   const doneCount = game.roadmap.filter((r) => r.done).length;
   const progress = Math.round((doneCount / Math.max(game.roadmap.length, 1)) * 100);
   const currentIndex = game.roadmap.findIndex((r) => !r.done);
-  const parade = [0, 1, 2].flatMap(() => game.enemies);
+  const stores = game.stores ?? [];
+  const enemies = game.enemies ?? [];
+
+  // Defenders walk out of the bakery in a loop; the list is doubled for a seamless track.
+  const parade = [0, 1, 2].flatMap(() => game.units);
   const track = [...parade, ...parade];
+
+  const blinkLine = stores.length
+    ? `NOW LIVE ON ${game.platforms.join(' & ').toUpperCase()}`
+    : game.playUrl
+      ? 'INSERT COIN TO PLAY'
+      : 'COMING SOON — INSERT COIN LATER';
+
+  let stageNo = 0;
+  const stage = () => `STAGE ${String(++stageNo).padStart(2, '0')}`;
 
   return (
     <>
@@ -168,7 +186,7 @@ export default function GameDetail({ project }: Props) {
                   <div className="flex items-center gap-2 sm:gap-3">
                     <PixelSprite sprite="coin" scale={2} />
                     <span className={`${px.hud} text-[#f6c743]`}>×00</span>
-                    <span className={`${px.hud} hidden sm:inline text-[#fff0c8]/70`}>WAVE 01</span>
+                    <span className={`${px.hud} hidden sm:inline text-[#fff0c8]/70`}>{game.buildLabel}</span>
                   </div>
                 </div>
 
@@ -181,64 +199,82 @@ export default function GameDetail({ project }: Props) {
                     {project.title}
                   </h1>
                   <p className={`${px.pixelFont} ${px.hardShadow} text-xs sm:text-lg text-[#f6c743] mt-8 tracking-[0.15em]`}>
-                    BREAD DEFENSE
+                    {game.genre.toUpperCase()}
                   </p>
                   <p className={`${px.galmuri} text-base sm:text-xl text-[#fff0c8]/85 mt-4 max-w-xl mx-auto`}>
                     {project.subtitle}
                   </p>
 
+                  {game.stats && game.stats.length > 0 && (
+                    <div className="mt-8 flex justify-center gap-8 sm:gap-14">
+                      {game.stats.map((s) => (
+                        <div key={s.label} className="text-center">
+                          <p className={`${px.pixelFont} ${px.hardShadow} text-xl sm:text-3xl text-[#f6c743]`}>{s.value}</p>
+                          <p className={`${px.galmuri} text-sm sm:text-base text-[#fff0c8]/70 mt-2`}>{s.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <div className="mt-10 flex flex-col items-center gap-5">
-                    {game.playUrl ? (
-                      <a href={game.playUrl} target="_blank" rel="noopener noreferrer" className={px.btn}>
-                        <span aria-hidden>▶</span> PRESS START
-                      </a>
-                    ) : (
-                      <span className={`${px.btn} ${px.btnDisabled}`} aria-disabled>
-                        <span aria-hidden>▶</span> PRESS START
-                      </span>
-                    )}
+                    <div className="flex flex-wrap justify-center gap-4">
+                      {game.playUrl ? (
+                        <a href={game.playUrl} target="_blank" rel="noopener noreferrer" className={px.btn}>
+                          <span aria-hidden>▶</span> PRESS START
+                        </a>
+                      ) : (
+                        <span className={`${px.btn} ${px.btnDisabled}`} aria-disabled>
+                          <span aria-hidden>▶</span> PRESS START
+                        </span>
+                      )}
+                      {stores.map((store) => (
+                        <a
+                          key={store.url}
+                          href={store.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${px.btn} ${px.btnGhost}`}
+                        >
+                          {store.label.toUpperCase()}
+                        </a>
+                      ))}
+                    </div>
                     <span className={`${px.pixelFont} ${px.blink} text-[9px] sm:text-[10px] text-[#fff0c8]/80`}>
-                      {game.playUrl ? 'INSERT COIN TO PLAY' : 'COMING SOON — INSERT COIN LATER'}
+                      {blinkLine}
                     </span>
                   </div>
 
                   <div className="mt-8 flex flex-wrap justify-center gap-2">
                     <span className={`${px.tag} text-[#7ee787]`}>● {statusLabels[status]}</span>
                     <span className={px.tag}>{game.buildLabel}</span>
-                    <span className={px.tag}>{game.genre}</span>
+                    <span className={px.tag}>{game.platforms.join(' · ')}</span>
                   </div>
                 </div>
 
-                {/* Battlefield */}
+                {/* Village at night: defenders set out from the bakery */}
                 <div className="relative z-[1] mt-8">
-                  <div className="relative h-24 sm:h-28">
+                  <div className="relative h-28 sm:h-32">
                     <div className="absolute left-3 sm:left-8 bottom-0 hidden sm:block">
                       <PixelSprite sprite="bakery" scale={3} />
                     </div>
-                    <div className="absolute left-3 sm:left-[120px] md:left-[140px] bottom-0 flex items-end gap-1 sm:gap-2">
-                      {HEROES.map((hero, i) => (
-                        <span
-                          key={hero}
-                          className={px.bob}
-                          style={{ display: 'block', animationDelay: `${i * 0.2}s` }}
-                        >
-                          <PixelSprite sprite={hero} scale={3} />
-                        </span>
-                      ))}
-                    </div>
-                    <div className="absolute right-0 bottom-0 w-[45%] sm:w-1/2 overflow-hidden" aria-hidden>
-                      <div className={px.marchTrack}>
-                        {track.map((enemy, i) => (
+                    <div className="absolute left-0 sm:left-[130px] right-0 bottom-0 overflow-hidden" aria-hidden>
+                      <div className={px.walkTrack}>
+                        {track.map((unit, i) => (
                           <span
                             key={i}
-                            className={`${px.wobble} mr-6 sm:mr-8`}
-                            style={{ display: 'block', animationDelay: `${(i % 4) * 0.15}s` }}
+                            className={`${px.bob} mr-8 sm:mr-12`}
+                            style={{ display: 'block', animationDelay: `${(i % 4) * 0.2}s` }}
                           >
-                            <PixelSprite sprite={enemy.sprite} scale={3} flip />
+                            <PixelSprite sprite={unit.sprite} scale={2.5} />
                           </span>
                         ))}
                       </div>
                     </div>
+                    <div
+                      className="absolute inset-y-0 right-0 w-1/3 pointer-events-none"
+                      style={{ background: 'linear-gradient(to left, rgba(13,11,30,0.95), rgba(13,11,30,0))' }}
+                      aria-hidden
+                    />
                   </div>
                   <div className={px.grass} />
                   <div className={`${px.ground} h-8`} />
@@ -246,8 +282,8 @@ export default function GameDetail({ project }: Props) {
               </section>
             </StaggerItem>
 
-            {/* ── STAGE 01 · Briefing ── */}
-            <Section index="STAGE 01" title="Mission Briefing">
+            {/* ── Briefing ── */}
+            <Section index={stage()} title="Mission Briefing">
               <div className="space-y-6">
                 <StaggerItem>
                   <div className={`${px.dialog} p-5 sm:p-7 flex items-start gap-5 sm:gap-7`}>
@@ -284,14 +320,30 @@ export default function GameDetail({ project }: Props) {
               </div>
             </Section>
 
-            {/* ── STAGE 02 · Features ── */}
-            <Section index="STAGE 02" title="Features">
+            {/* ── Key art ── */}
+            {game.keyArt && (
+              <Section index={stage()} title="The Village">
+                <StaggerItem>
+                  <figure className={`${px.box} ${px.boxAccent} p-2 sm:p-3`}>
+                    <div className="relative aspect-[3/2] w-full overflow-hidden border-4 border-[#1b1226]">
+                      <Image src={game.keyArt.src} alt={game.keyArt.alt} fill className="object-cover" unoptimized />
+                    </div>
+                    <figcaption className={`${px.galmuri} text-sm sm:text-base text-[#fff0c8]/65 mt-3 px-1 pb-1`}>
+                      {game.keyArt.caption}
+                    </figcaption>
+                  </figure>
+                </StaggerItem>
+              </Section>
+            )}
+
+            {/* ── Features ── */}
+            <Section index={stage()} title="Features">
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
                 {game.features.map((feature) => (
                   <StaggerItem key={feature.title}>
                     <div className={`${px.box} ${px.gridBg} h-full p-5`}>
                       <div className="h-16 flex items-end mb-4">
-                        <PixelSprite sprite={feature.sprite} scale={feature.sprite === 'bakery' ? 2.5 : 3.5} />
+                        <PixelSprite sprite={feature.sprite} scale={fitScale(feature.sprite, 60)} />
                       </div>
                       <h3 className={`${px.pixelFont} text-[10px] sm:text-[11px] leading-relaxed text-[#f6c743] mb-3`}>
                         {feature.title.toUpperCase()}
@@ -305,38 +357,54 @@ export default function GameDetail({ project }: Props) {
               </div>
             </Section>
 
-            {/* ── STAGE 03 · Roster ── */}
-            <Section index="STAGE 03" title="Roster">
+            {/* ── Roster ── */}
+            <Section index={stage()} title="Roster">
               <div className="space-y-10">
                 <div>
                   <StaggerItem>
-                    <p className={`${px.label} text-[#7ee787] mb-5`}>▶ BREAD UNITS</p>
+                    <p className={`${px.label} text-[#7ee787] mb-5`}>▶ BREAD DEFENDERS</p>
                   </StaggerItem>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
                     {game.units.map((unit) => (
                       <StaggerItem key={unit.nameEn}>
                         <UnitCard unit={unit} />
                       </StaggerItem>
                     ))}
                   </div>
+                  {game.playUrl && (
+                    <StaggerItem>
+                      <a
+                        href={game.playUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${px.pixelFont} mt-6 inline-flex items-center gap-3 text-[10px] text-[#fff0c8]/60 hover:text-[#f6c743] transition-colors`}
+                      >
+                        <span aria-hidden>▶</span>
+                        ALL 64 BREADS IN THE OFFICIAL FIELD GUIDE
+                        <span aria-hidden>↗</span>
+                      </a>
+                    </StaggerItem>
+                  )}
                 </div>
-                <div>
-                  <StaggerItem>
-                    <p className={`${px.label} text-[#e5484d] mb-5`}>▶ ENEMIES</p>
-                  </StaggerItem>
-                  <div className="grid sm:grid-cols-2 gap-6 sm:gap-7">
-                    {game.enemies.map((enemy) => (
-                      <StaggerItem key={enemy.nameEn}>
-                        <UnitCard unit={enemy} enemy />
-                      </StaggerItem>
-                    ))}
+                {enemies.length > 0 && (
+                  <div>
+                    <StaggerItem>
+                      <p className={`${px.label} text-[#e5484d] mb-5`}>▶ ENEMIES</p>
+                    </StaggerItem>
+                    <div className="grid sm:grid-cols-2 gap-6 sm:gap-7">
+                      {enemies.map((enemy) => (
+                        <StaggerItem key={enemy.nameEn}>
+                          <UnitCard unit={enemy} enemy />
+                        </StaggerItem>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </Section>
 
-            {/* ── STAGE 04 · Live Ops ── */}
-            <Section index="STAGE 04" title="Live Operations">
+            {/* ── Live Ops ── */}
+            <Section index={stage()} title="Live Operations">
               <div className="space-y-6">
                 <StaggerItem>
                   <p className={`${px.galmuri} text-base sm:text-lg text-[#fff0c8]/80 leading-relaxed max-w-3xl`}>
@@ -364,8 +432,8 @@ export default function GameDetail({ project }: Props) {
               </div>
             </Section>
 
-            {/* ── STAGE 05 · Quest log ── */}
-            <Section index="STAGE 05" title="Quest Log">
+            {/* ── Quest log ── */}
+            <Section index={stage()} title="Quest Log">
               <StaggerItem>
                 <div className={`${px.box} p-5 sm:p-7`}>
                   <div className="flex items-center justify-between mb-3">
@@ -408,8 +476,8 @@ export default function GameDetail({ project }: Props) {
               </StaggerItem>
             </Section>
 
-            {/* ── STAGE 06 · Palette & Type ── */}
-            <Section index="STAGE 06" title="Palette & Type">
+            {/* ── Palette & Type ── */}
+            <Section index={stage()} title="Palette & Type">
               <div className="space-y-8">
                 <StaggerItem>
                   <p className={`${px.galmuri} text-base sm:text-lg text-[#fff0c8]/80 leading-relaxed max-w-3xl`}>
@@ -466,8 +534,8 @@ export default function GameDetail({ project }: Props) {
               </div>
             </Section>
 
-            {/* ── STAGE 07 · Stack & Credits ── */}
-            <Section index="STAGE 07" title="Stack & Credits">
+            {/* ── Stack & Credits ── */}
+            <Section index={stage()} title="Stack & Credits">
               <div className="grid sm:grid-cols-2 gap-6 sm:gap-7">
                 <StaggerItem>
                   <div className={`${px.box} h-full p-5`}>
@@ -495,6 +563,24 @@ export default function GameDetail({ project }: Props) {
                   </div>
                 </StaggerItem>
               </div>
+
+              {caseStudy.links.length > 0 && (
+                <div className="grid sm:grid-cols-3 gap-6 sm:gap-7 mt-6 sm:mt-7">
+                  {caseStudy.links.map((link) => (
+                    <StaggerItem key={link.url}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${px.box} ${px.boxLight} block h-full p-5 hover:bg-[#2a2350] transition-colors`}
+                      >
+                        <p className={`${px.pixelFont} text-[10px] text-[#f6c743]`}>{link.label.toUpperCase()} ↗</p>
+                        <p className={`${px.galmuri} text-base text-[#fff0c8]/70 mt-3 leading-relaxed`}>{link.description}</p>
+                      </a>
+                    </StaggerItem>
+                  ))}
+                </div>
+              )}
             </Section>
 
             {/* ── Continue? ── */}

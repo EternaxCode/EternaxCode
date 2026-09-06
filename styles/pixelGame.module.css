@@ -193,14 +193,16 @@
 }
 .wobble { animation: wobble 0.7s steps(2) infinite; }
 
-@keyframes march {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+/* Defenders walk out of the bakery (left → right); content is doubled for a seamless loop. */
+@keyframes walk {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
-.marchTrack {
+.walkTrack {
   display: flex;
+  align-items: flex-end;
   width: max-content;
-  animation: march 18s linear infinite;
+  animation: walk 26s linear infinite;
 }
 
 @keyframes twinkle {

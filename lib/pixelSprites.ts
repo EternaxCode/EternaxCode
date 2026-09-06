@@ -1,9 +1,14 @@
-// ─── Pixel-art sprites for 빵어전 (Bbang-eonjeon) ───
+// ─── Pixel-art sprites for 빵어전 (Bbang-eojeon) ───
 //
 // Each sprite is a grid of palette keys. `.` is transparent.
 // Sprites are rendered as crisp SVG rects by <PixelSprite />.
+//
+// The four bread defenders (뚜신, 크로와, 바게트 경, 도나) are converted 1:1 from
+// the official character SVGs published on https://bbangeojeon.eternaxcode.com.
+// The remaining sprites (bakery, baker, heart, coin) are drawn for this site.
 
 export const PIXEL_PALETTE = {
+  // Site sprites
   k: '#1b1226', // outline
   c: '#d4813f', // crust
   d: '#8f4c1f', // dark crust
@@ -13,12 +18,18 @@ export const PIXEL_PALETTE = {
   w: '#ffffff', // white
   r: '#e5484d', // red
   p: '#f6a5a5', // pink cheeks
-  g: '#7ee787', // green
-  m: '#8b5cf6', // mold purple
-  M: '#4c2a85', // mold dark
-  s: '#c7d2e0', // steel
   f: '#f8d3a7', // skin
-  a: '#b5532a', // ant rust-brown (readable on the night sky)
+  // Official 빵어전 character colors (from the game's own sprite SVGs)
+  F: '#3b2820', // outline brown
+  E: '#f9ebc6', // bread cream
+  H: '#d9975b', // crust
+  I: '#ae6547', // dark crust
+  G: '#261812', // eyes & mouth
+  J: '#5f4133', // deep shadow
+  B: '#f2a950', // ember orange
+  C: '#e8823a', // ember core
+  L: '#ffdda6', // ember highlight
+  D: '#fff9ea', // near-white highlight
 } as const;
 
 export type PixelPaletteKey = keyof typeof PIXEL_PALETTE;
@@ -30,118 +41,116 @@ export interface PixelSpriteData {
 }
 
 export const PIXEL_SPRITES = {
-  /** 식빵 기사 — Toast Knight (16×16) */
-  toastKnight: {
-    name: 'Toast Knight',
+  /** 뚜신 — the village's small ember (official, 28×27) */
+  tussin: {
+    name: '뚜신 (Tussin)',
     rows: [
-      '..kkkk..kkkk..ws',
-      '.kccccckccccckws',
-      '.kccccccccccckws',
-      '.kcbbbbbbbbbckws',
-      '.kcbbbbbbbbbckws',
-      '.kcbkbbbbbkbckws',
-      '.kcbkbbbbbkbckyy',
-      '.kcbbbbbbbbbckd.',
-      '.kcbpbbbbbpbckd.',
-      '.kcbbbkkkbbbck..',
-      '.kcbbbbbbbbbck..',
-      '.kccccccccccck..',
-      '.kkkkkkkkkkkkk..',
-      '...dd....dd.....',
-      '...kk....kk.....',
-      '................',
+      '.............BB.............',
+      '............BCCB............',
+      '...........BCLLCB...........',
+      '..........BCLLLLCB..........',
+      '..........BCLDDLCB..........',
+      '...........BCLLCB...........',
+      '............BCCB............',
+      '.............BB.............',
+      '..........FFFFFFFF..........',
+      '........FFEEEEEEEEFF........',
+      '......FFEEEEEEEEEEEEFF......',
+      '.....FEEEEEEEEEEEEEEEEF.....',
+      '....FEEEDEEEEEEEEEEEEEEF....',
+      '...FEEEEEEEEEEEEEEEEEEEEF...',
+      '..FEEEEEEEEEEEEEEEEEEEEEEF..',
+      '.FEEEEEGEEEEEEEEGEEEEEEEEEF.',
+      '.FEEEEEEEEEEEEEEEEEEEEEEEEF.',
+      'FEEEEEEEEEEFFFFEEEEEEEEEEEEF',
+      'FEEEEEEEEEFHHHHFEEEEEEEEEEEF',
+      'FEEEEEEEEEEEEEEEEEEEEEEEEEEF',
+      '.FEEEEEEEEEEEEEEEEEEEEEEEEF.',
+      '..FEEEEEEEEEEEEEEEEEEEEEEF..',
+      '...FEEEEEEEEEEEEEEEEEEEEF...',
+      '....FHHHEEEEEEEEEEEEHHHF....',
+      '......FFHHHHHHHHHHHHFF......',
+      '........FFFFFFFFFFFF........',
+      '.........FFFF..FFFF.........',
     ],
   },
 
-  /** 바게트 창병 — Baguette Lancer (16×16) */
-  baguetteLancer: {
-    name: 'Baguette Lancer',
+  /** 크로와 — crispy crescent (official, 26×20) */
+  croissant: {
+    name: '크로와 (Croissant)',
     rows: [
-      '......kkkk......',
-      '.....kccccck....',
-      '....kccdccck....',
-      '....kcdcccck....',
-      '....kbbbbbbk....',
-      '....kbkbbkbk....',
-      '....kbkbbkbk....',
-      '....kbbkkbbk....',
-      '....kcccccck....',
-      '....kcccdcck....',
-      '....kccdccck....',
-      '....kcccccck....',
-      '.....kccccck....',
-      '......kkkk......',
-      '.......dd.......',
-      '.......kk.......',
+      '...FF................FF...',
+      '..FHHF..............FHHF..',
+      '.FHHIHF............FHIHHF.',
+      'FHHIHHF....FFFF....FHHIHHF',
+      'FHHIHHF..FFHHHHFF..FHHIHHF',
+      'FHHIHHFFFHHEEEEHHFFFHHIHHF',
+      '.FHHIHHHHEEEEEEEEHHHHIHHF.',
+      '.FHHHHEEDEEEEEEEEDEEHHHHF.',
+      '..FHHEEEEEHHHHEEEEEHHHF...',
+      '..FHHEEEFFHHHHFFEEEHHF....',
+      '...FHHEFHHHGGHHHFEEHHF....',
+      '...FHHEFHHHHHHHHFEEHHF....',
+      '....FHHEFHHHHHHFEHHHF.....',
+      '....FHHHEFHHHHFEHHHF......',
+      '.....FHHHEFFFFEHHHF.......',
+      '......FHHHHHHHHHHF........',
+      '.......FFHIIIIHFF.........',
+      '.........FFFFFF...........',
+      '..........FF..FF..........',
+      '..........FF..FF..........',
     ],
   },
 
-  /** 멜론빵 수호자 — Melon Bread Guardian (16×16) */
-  melonGuardian: {
-    name: 'Melon Bread Guardian',
+  /** 바게트 경 — Sir Baguette (official, 18×17) */
+  baguette: {
+    name: '바게트 경 (Sir Baguette)',
     rows: [
-      '....kkkkkkkk....',
-      '...kccccccccck..',
-      '..kcccccccccck..',
-      '.kccdcccdcccdck.',
-      '.kccdcccdcccdck.',
-      '.kddddddddddddk.',
-      '.kcccccccccccck.',
-      '.kccckcccckccck.',
-      '.kccckcccckccck.',
-      '.kccpccccccpcck.',
-      '.kccccckkccccck.',
-      '..kcccccccccck..',
-      '...kcccccccck...',
-      '....kkkkkkkk....',
-      '................',
-      '................',
+      '..............FFF.',
+      '............FFHIIF',
+      '...........FEEEIIF',
+      '..........FHIIIIIF',
+      '.........FHHHHIIF.',
+      '........FHHHHIIF..',
+      '.......FEEEHIIF...',
+      '......FHIIIIIF....',
+      '.....FHHHHIIF.....',
+      '....FHHHHIIF......',
+      '...FEEEHIIF.......',
+      '..FHIIIIIF........',
+      '.FHHHHIIF.........',
+      'FHHHHIIF..........',
+      'FIIIIGF...........',
+      'FIIIFF............',
+      '.FFF..............',
     ],
   },
 
-  /** 곰팡이 — Mold Blob enemy (16×16) */
-  moldBlob: {
-    name: 'Mold Blob',
+  /** 도나 — Dona the donut (official, 24×21) */
+  dona: {
+    name: '도나 (Dona)',
     rows: [
-      '......kk.....g..',
-      '.....kmmk..kk...',
-      '....kmmmmkkmmk.g',
-      '...kmmmmmmmmmmk.',
-      '..kmmmmmmmmmmmk.',
-      '..kmmwkmmmmwkmk.',
-      '.kmmmwkmmmmwkmmk',
-      '.kmmmmmmmmmmmmmk',
-      '.kmmmkkkkkkkmmmk',
-      '.kmmmkwkwkwkmmmk',
-      '.kMmmmmmmmmmmmMk',
-      '..kMMmmmmmmmMMk.',
-      '..kMMMMMMMMMMMk.',
-      '...kkMMkkkMMkk..',
-      '.....kk...kk....',
-      '................',
-    ],
-  },
-
-  /** 개미 — Crumb Ant enemy (16×16) */
-  crumbAnt: {
-    name: 'Crumb Ant',
-    rows: [
-      '................',
-      '................',
-      '............a.a.',
-      '.............a..',
-      '....aaa....aaaa.',
-      '...aaaaa..aakaa.',
-      '..aaaaaaaaaaaaa.',
-      '..aaaaaaaaaaaa..',
-      '...aaaaa.aaaa...',
-      '..a.a.a.a.a.a...',
-      '.a..a..a..a..a..',
-      '................',
-      '................',
-      '................',
-      '................',
-      '................',
+      '........FFFFFFFF........',
+      '......FFHHHHHHHHFF......',
+      '.....FHHEEEEEEEEHHF.....',
+      '....FHHEEDDEEEEEEHHF....',
+      '...FHHEEDEEEEEEEEEHHF...',
+      '..FHHHEEEEFFFFEEEEEHHF..',
+      '.FHHHEEEEFF..FFEEEEEHHF.',
+      '.FHHEEEEFF....FFEEEEEHF.',
+      'FHHEEEEFF......FFEEEHHHF',
+      'FHHEEDFF........FFEEEHHF',
+      'FHHEEEJF........FJEEEHHF',
+      'FHHHEEFF........FFEEHHHF',
+      '.FHHHEEFF......FFEEHHHF.',
+      '.FHHHEEEFF....FFEEEHHHF.',
+      '..FHHHEEEEFFFFEEEEEHHF..',
+      '...FHHHEEEGGEEEEEHHHF...',
+      '....FHHHHEEFFEEHHHHF....',
+      '.....FIIIIHHHHIIIIF.....',
+      '.......FFIIIIIIFF.......',
+      '.........FF..FF.........',
+      '.........FF..FF.........',
     ],
   },
 

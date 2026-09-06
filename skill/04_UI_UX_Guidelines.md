@@ -43,8 +43,11 @@ The background is a custom Point Cloud system rendered via React Three Fiber.
 Projects with `type: 'game'` in `lib/worksData.ts` are rendered by `components/GameDetail.tsx` instead of the glass case-study layout.
 - **Styles**: `styles/pixelGame.module.css` — chunky 4px borders, hard drop shadows, CRT scanlines, stepped (`steps()`) animations.
 - **Fonts**: `Galmuri11` (Korean bitmap font, SIL OFL, loaded from jsDelivr in the module) for Korean/body text and `Press Start 2P` (Google Fonts, loaded in `_document.tsx`) for HUD/labels.
-- **Sprites**: defined as character grids in `lib/pixelSprites.ts` and rendered as crisp SVG by `components/PixelSprite.tsx`. Add a sprite there and reference it by key from the game data.
-- **Thumbnail**: `public/works/bbang-eonjeon.png` is a 1200×630 title-screen composition built from the same sprites.
+- **Sprites**: defined as character grids in `lib/pixelSprites.ts` and rendered as crisp SVG by `components/PixelSprite.tsx`. The four bread defenders (뚜신, 크로와, 바게트 경, 도나) are converted 1:1 from the official character SVGs on bbangeojeon.eternaxcode.com; add a sprite there and reference it by key from the game data.
+- **Thumbnail**: `public/works/bbang-eonjeon.png` is a 1200×630 title-screen composition built from the same sprites. The painterly key art in `public/works/bbang-eonjeon/` comes from the official HQ site.
+
+## Bio Link Page (`/links`)
+`pages/links/index.tsx` is the mobile-first "link in bio" page for Instagram. It is listed in `CHROMELESS_ROUTES` in `_app.tsx`, so it renders without the navigation, fixed footer, and music button (the starfield stays, under a dark scrim). Products come from `worksData` — discontinued ones are hidden, and the `ORDER` array at the top of the page controls the display order (first item is the featured card). Its share image is `public/og-links.png`.
 
 ## Project Status
 `WorkProjectBase.status` (`live` | `in-development` | `discontinued`) drives the status badge on work cards and the notice banner on case-study pages. Discontinued projects (e.g. Econalk) keep their case study as an archive, with the live link removed and the thumbnail greyed out.
