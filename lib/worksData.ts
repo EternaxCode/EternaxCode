@@ -1,3 +1,4 @@
+import { haruProject } from './haruProject';
 import type { PixelSpriteKey } from '@/lib/pixelSprites';
 
 // ─── Lifecycle Status (shared by every project) ───
@@ -218,6 +219,7 @@ export type WorkProject = WebProject | AppProject | GameProject | DesignProject;
 // ─── Data ───
 
 export const worksData: WorkProject[] = [
+  haruProject,
   {
     type: 'web',
     id: 'ddubakehouse',
