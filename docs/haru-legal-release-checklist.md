@@ -21,7 +21,7 @@ Primary sources reviewed:
 - Google refunds: https://support.google.com/googleplay/answer/2479637?hl=ko-kr
 
 ## Required before paid release — not certified complete
-1. User must supply public legal seller name, representative, registration/address/e-commerce registration and support phone. Do not publish their review-only personal phone without permission.
+1. Public seller identity copied from the user-designated reference, 빵어전 Google Play listing, on 2026-10-05: 이터낙스코드, 843-27-01908, 2026-제주한경-0059, 제주특별자치도 제주시 한경면 두신로 63 (63002), +82 10-9125-6431. Public contact reuse is authorized. Representative title was not inferred from a support name.
 2. Counsel review of Korean consumer/privacy requirements and store seller/agency responsibilities. These pages are not legal clearance.
 3. Verify exact Vercel/GitHub log retention and all overseas processing/subprocessor countries, and finalize required disclosures/notification or separate consent. Do not infer Firebase data stays entirely in Korea from Firestore's region.
 4. Establish deletion/retention operational process: inspect and purge unnecessary billing references on requests; implement auditable retention expiry for legally retained records. Existing App deletion is not proof of this full backend process.
