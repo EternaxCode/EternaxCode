@@ -24,7 +24,7 @@ Primary sources reviewed:
 1. Public seller identity copied from the user-designated reference, 빵어전 Google Play listing, on 2026-10-05: 이터낙스코드, 843-27-01908, 2026-제주한경-0059, 제주특별자치도 제주시 한경면 두신로 63 (63002), +82 10-9125-6431. Public contact reuse is authorized. Representative title was not inferred from a support name.
 2. Counsel review of Korean consumer/privacy requirements and store seller/agency responsibilities. These pages are not legal clearance.
 3. Verify exact Vercel/GitHub log retention and all overseas processing/subprocessor countries, and finalize required disclosures/notification or separate consent. Do not infer Firebase data stays entirely in Korea from Firestore's region.
-4. Establish deletion/retention operational process: inspect and purge unnecessary billing references on requests; implement auditable retention expiry for legally retained records. Existing App deletion is not proof of this full backend process.
-5. Enforce appropriate under-14 consent/age handling before accepting minors' cloud accounts; currently no guardian-consent flow.
+4. Server deletion and daily retention cleanup implemented and emulator-tested on 2026-10-05. Auth identity, study data, renewable proofs/mappings and sandbox history are purged; production verification evidence has a private expiry queue. Real user data was not deleted in QA. Monitor the protected daily worker after deployment.
+5. Login now requires 14+ self-declaration and terms acknowledgement before OAuth, with guest alternative and no date-of-birth collection. There is no guardian-consent flow; under-14 cloud accounts remain unsupported.
 6. Actual Apple/Google trial, cancel, restore, refund lifecycle QA and store configuration. Google auto-cancel code is not real-provider verification.
 7. Update store listing support/privacy URLs to the new canonical pages in final store submission.
