@@ -116,7 +116,7 @@ export const haruProject: AppProject = {
       },
       {
         "question": "환불 요청",
-        "answer": "Apple에서 구매했다면 reportaproblem.apple.com에서 해당 구매를 찾아 환불을 요청하세요. Google Play에서 구매했다면 Google Play 환불 요청 절차를 이용하세요. 판단은 적용 법령·구매 내역·콘텐츠 제공 상태 및 해당 스토어 정책에 따라 이루어집니다. Haru 고객지원도 구매 확인과 오류 해결을 도와드립니다. 동일 거래의 환불을 중복 지급하지는 않지만, 스토어 문의만을 이유로 법정 권리 행사를 거절하지 않습니다."
+        "answer": "Apple App Store에서 구매했다면 Apple(reportaproblem.apple.com)에, Google Play에서 구매했다면 Google Play의 공식 환불 절차로 신청하세요. 구독 취소·회원탈퇴만으로 이미 결제된 금액이 자동 환불되지는 않습니다. Haru 앱에는 직접 환불 접수·지급 기능이 없습니다. 판단은 적용 법령·구매 내역·콘텐츠 제공 상태 및 해당 스토어 정책에 따라 이루어집니다. Haru 고객지원도 구매 확인과 오류 해결을 도와드립니다. 동일 거래의 환불을 중복 지급하지는 않지만, 스토어 문의만을 이유로 법정 권리 행사를 거절하지 않습니다."
       },
       {
         "question": "해지·체험 종료",
