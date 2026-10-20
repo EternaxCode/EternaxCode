@@ -540,7 +540,7 @@ export const worksData: WorkProject[] = [
         {
           icon: '☁️',
           title: 'Cloud Sync',
-          description: 'Automatic bi-directional sync with iCloud (iOS) or Google Drive (Android). Smart conflict resolution keeps your data safe.',
+          description: 'Sync uses iCloud on Apple devices and Google Drive on Android. Entries, photos and recordings do not automatically sync between Apple and Android, even with the same app login.',
         },
         {
           icon: '🎨',
@@ -565,7 +565,7 @@ export const worksData: WorkProject[] = [
         },
         {
           question: 'Is my data backed up?',
-          answer: 'Yes. Memoire syncs automatically in the background — via iCloud on iOS and Google Drive on Android. Your entries and photos are safely backed up every hour.',
+          answer: 'When the relevant cloud account is connected and available, Memoire syncs through iCloud on Apple devices or Google Drive on Android. Network and operating-system restrictions can delay background sync; check its status in Settings. Apple and Android data do not automatically sync with each other, even with the same app login.',
         },
         {
           question: 'Can I export my diary as a book?',
@@ -599,39 +599,39 @@ export const worksData: WorkProject[] = [
       ctaUrl: 'https://apps.apple.com/kr/app/memoire-%EB%82%98%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6759441421',
     },
     privacy: {
-      effectiveDate: '2026-03-04',
+      effectiveDate: '2026-10-21',
       introduction:
         'EternaxCode ("we", "us", or "our") operates the Memoire application. This Privacy Policy explains how we collect, use, and protect your information when you use our app.',
       sections: [
         {
           title: '1. Information We Collect',
           content:
-            'Memoire is designed with a local-first architecture. Your diary entries, photos, and personal data are stored locally on your device. We collect the following information only when you opt in to specific features:\n\n• Account Information: When you sign in with Google or Apple, we receive your name, email address, and profile photo to create your account.\n• Diary Data (Cloud Sync only): If you enable cloud sync, your diary entries and attached photos are uploaded to your personal iCloud (iOS) or Google Drive (Android) storage. This data is stored in your own cloud account, not on our servers.\n• Usage Analytics: We use Firebase Analytics to collect anonymous usage data (e.g., feature usage frequency, crash reports) to improve the app. No personal diary content is included in analytics.',
+            "Memoire stores diary entries, photos and original voice recordings locally on your device. Different features handle data as follows:\n\n• Account and Profile: Google or Apple sign-in provides account identifiers, name, email and a profile photo URL where available. Firebase Authentication manages the account. Firestore stores your profile name, optional birth date and theme inventory. These account/profile records are separate from your personal cloud diary files.\n• Diary Cloud Sync: When your cloud account is connected and sync is available, entries, photos and attached recordings can be uploaded to your personal iCloud (Apple devices) or Google Drive (Android). These diary files are not stored on our own servers. The two storage systems are separate: using the same app login does not sync diary files between Apple devices and Android.\n• Usage Analytics: Firebase Analytics collects app interactions, installation/device identifiers and technical metadata to help us improve the app. Diary text, photos, recordings and AI drafts are not included in our analytics events. Analytics is not described as fully anonymous because identifiers can distinguish installations.\n• Voice and Writing Assistance: Supported versions can record audio and use on-device speech recognition and writing AI. There is no automatic server inference fallback. Recognition and AI suggestions may be inaccurate or change meaning. Automatic writing suggestions are off by default and require review and explicit application. Model preparation may download data.",
         },
         {
           title: '2. How We Use Your Information',
           content:
-            '• To provide and maintain the app\'s core functionality\n• To sync your data across your devices via iCloud or Google Drive\n• To process in-app purchases for premium themes\n• To send daily reminder notifications (if enabled by you)\n• To improve app performance and fix bugs through anonymous analytics',
+            "• To authenticate your account and maintain your profile and theme inventory\n• To write, save and replay diary entries and recordings\n• To synchronize diary files within the applicable cloud provider, not between iCloud and Google Drive\n• To offer optional on-device transcription and writing suggestions\n• To send local reminders when enabled\n• To understand feature usage and improve app reliability",
         },
         {
           title: '3. Data Storage & Security',
           content:
-            '• Local Storage: All diary entries are stored in an encrypted SQLite database on your device.\n• Cloud Storage: When sync is enabled, data is stored in your personal iCloud or Google Drive account, protected by their respective security measures.\n• Authentication: We use Firebase Authentication with OAuth 2.0 (Google Sign-In, Apple Sign-In) for secure account access.\n• We do not store your diary content, photos, or personal entries on our servers.',
+            "• Local Storage: Diary records are stored in a SQLite database, with media files in app storage. Memoire does not add application-level database encryption; protection depends on device and operating-system security.\n• Cloud Storage: Personal diary files use your own iCloud or Google Drive account and its security controls. Apple-device and Android cloud stores remain separate.\n• Account Storage: Firebase Authentication and Firestore retain account/profile data, such as identifiers, name, email, optional birth date and theme inventory.\n• On-device AI: Transcription and writing inference use supported device APIs. Original recordings remain available if transcription fails; writing suggestions change the diary only after explicit application.",
         },
         {
           title: '4. Third-Party Services',
           content:
-            'Memoire uses the following third-party services:\n\n• Firebase (Google): Authentication, analytics, and user profile management\n• Apple iCloud: Cloud sync for iOS users\n• Google Drive: Cloud sync for Android users\n\nEach service has its own privacy policy. We encourage you to review them.',
+            "Memoire uses Firebase Authentication, Firestore and Analytics for account/profile management and usage measurement; Apple iCloud for Apple-device diary sync; and Google Drive for Android diary sync. Supported voice/writing features use Apple Speech and Foundation Models or Android on-device speech services and ML Kit. Preparing device models may involve a download. These providers have their own privacy policies. Personal cloud diary files are separate from Firebase account/profile data.",
         },
         {
           title: '5. Permissions',
           content:
-            '• Camera: To take photos directly for diary entries\n• Photo Library: To select existing photos for diary entries\n• Notifications: To send daily writing reminders (optional)\n• Internet: To sync data and authenticate your account',
+            "• Microphone: To record a voice diary when you start recording\n• Speech Recognition (Apple): To transcribe saved audio on supported devices\n• Camera and Photo Library: To take or select diary photos\n• Notifications: To send optional local writing reminders\n• Internet: For account authentication, cloud sync, analytics and optional model downloads",
         },
         {
           title: '6. Data Retention & Deletion',
           content:
-            'Your diary data remains on your device and in your cloud storage as long as you choose to keep it. You can delete individual entries at any time within the app. To delete your account and all associated data, go to Settings > Account > Delete Account. Cloud-synced data can be removed from your iCloud or Google Drive settings.',
+            "Diary files remain on your device and in your personal cloud account while you keep them. You can delete entries in the app. Account deletion is available in Settings and removes the Firebase account/profile and local diary data, including voice recordings; cloud cleanup requires the provider to be connected and reachable. You can also manage or remove synced files through your iCloud or Google Drive account. Because iCloud and Google Drive are separate, check each provider when managing data kept on both platforms. Analytics retention follows the Firebase/Google Analytics configuration and provider policies.",
         },
         {
           title: '7. Children\'s Privacy',
