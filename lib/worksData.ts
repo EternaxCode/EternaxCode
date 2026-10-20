@@ -560,6 +560,10 @@ export const worksData: WorkProject[] = [
       description: 'We\'re here to help you get the most out of Memoire. Check our frequently asked questions below or reach out directly.',
       faqs: [
         {
+          question: "How can I delete my account or request data deletion?",
+          answer: "In Memoire, open Settings and choose Delete Account. If you cannot access the app, email eternaxcode@gmail.com from the email address linked to your Memoire account and request account/data deletion. Do not send your password. We may verify account ownership before deleting Firebase account/profile records. Personal diary files are held on your device and in your own cloud storage; app-side cloud cleanup requires a connected, reachable provider, and you can also remove those files directly in iCloud or Google Drive. Check both cloud providers if you have used both Apple and Android devices. Analytics retention follows the provider settings and policies.",
+        },
+        {
           question: 'How do I create my first diary entry?',
           answer: 'Tap the "+" button on the home screen, write your thoughts, attach photos from your camera or gallery, select your mood and weather, then hit save.',
         },
