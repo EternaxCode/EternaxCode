@@ -3,10 +3,12 @@ import type { PixelSpriteKey } from '@/lib/pixelSprites';
 
 // ─── Lifecycle Status (shared by every project) ───
 
-export type ProjectStatus = 'live' | 'in-development' | 'discontinued';
+/** 'in-review': finished and submitted, waiting for the app stores' approval. */
+export type ProjectStatus = 'live' | 'in-review' | 'in-development' | 'discontinued';
 
 export const statusLabels: Record<ProjectStatus, string> = {
   live: 'Live',
+  'in-review': 'In Store Review',
   'in-development': 'In Development',
   discontinued: 'Service Ended',
 };
@@ -186,6 +188,11 @@ interface WorkProjectBase {
   status?: ProjectStatus;
   /** Shown alongside the status badge on the detail page (e.g. why a service ended). */
   statusNote?: string;
+  /**
+   * A hand-built page under public/ that stands in for the /works/[id] detail (e.g. a game's
+   * own site with its policy pages). Cards and links go there; the dynamic route skips the id.
+   */
+  page?: string;
   caseStudy: CaseStudy;
 }
 
@@ -827,9 +834,92 @@ export const worksData: WorkProject[] = [
       },
     },
   },
+  {
+    type: 'game',
+    id: 'battletank',
+    title: '배틀탱크: 강철 돌격대',
+    url: 'https://eternaxcode.com/works/battletank/',
+    // The game page, its policy pages (privacy, terms, support, odds) and the trailer are
+    // generated from the game repo (tools/site_pages.py) into public/works/battletank/.
+    page: '/works/battletank/',
+    description:
+      'A landscape twin-stick tank action game. One tank, 07, against the rusted legion: 7 fronts, 35 operations, 7 bosses, builds that change every level-up, and ranked 2v2 squad battles. Submitted to the App Store and Google Play.',
+    tags: ['Game', 'Tank Action', 'iOS', 'Android'],
+    image: '/works/battletank.png',
+    fallbackGradient: 'from-stone-900 via-orange-950 to-zinc-900',
+    fallbackLabel: '배틀탱크',
+    accentColor: 'rgba(245, 184, 46, 0.4)',
+    status: 'in-review',
+    statusNote:
+      'Version 0.9.0 was submitted to Google Play and the App Store on 2026-10-24. Store links go up here once both reviews pass.',
+    subtitle: '전차 한 대로 녹슨 군단을 돌파하라 — one tank against the rusted legion.',
+    heroDescription:
+      '배틀탱크: 강철 돌격대 (Battle Tank: Steel Assault Corps) is EternaxCode\'s second original game. The rusted legion has swallowed the supply lines and one tank, 07, is left: drive with the left thumb, aim with the right, and let go to auto-aim. Every level-up reshapes the build, five weapons evolve at Lv5, and ranked 2v2 squad battles are judged on our own server.',
+    caseStudy: {
+      tagline: 'One tank against the rusted legion — a twin-stick tank action game we build and run ourselves.',
+      overview: {
+        summary:
+          '배틀탱크 is a landscape twin-stick action game for phones: a campaign of 7 chapters and 35 operations with 7 bosses and 15 elite operations, 12 hulls and 6 part slots to build a tank, and ranked 2v2 squad battles. The client, the ranked server, the art, sound and voice pipelines, and the store releases are all made in-house.',
+        challenge:
+          'A horde shooter has to stay readable with hundreds of enemies and effects on a phone, while ranked battles need a deterministic simulation that a server can judge.',
+        approach:
+          'The battle runs on a fixed 60 Hz tick that reads only quantized input and a seeded RNG, so the same simulation powers the campaign and the server-judged ranked mode. Every number the UI shows comes from the same data files, and art, music and voices are rendered from source by our own tools.',
+        scope: ['Game design & balancing', 'Art & effects', 'iOS & Android client', 'Ranked PvP server', 'Sound & voice-over', 'Store releases & policy pages'],
+      },
+      designSystem: {
+        concept:
+          'Military diorama at dusk: olive armour and amber hazard stripes against rust and smoke, chunky outlines and hard drop shadows, effects that hit hard but keep the field readable.',
+        colors: [
+          { name: 'Amber', hex: '#F5B82E', role: 'Hazard stripes, highlights & calls to action' },
+          { name: 'Cream', hex: '#FFF3D6', role: 'Titles & text' },
+          { name: 'Ink', hex: '#161008', role: 'Outlines, shadows & panels' },
+        ],
+        typography: [
+          { family: 'Black Han Sans', usage: 'Korean titles and callouts' },
+          { family: 'Black Ops One', usage: 'English labels and stencils' },
+          { family: 'Pretendard', usage: 'UI and body text' },
+        ],
+        principles: [
+          { title: 'Readable under fire', description: 'Enemies, shots and pickups keep distinct silhouettes even when the screen is full.' },
+          { title: 'Two thumbs, no menus mid-fight', description: 'Left half moves, right half aims, letting go auto-aims.' },
+          { title: 'Looks, never stats', description: 'Tank skins and paints change how a tank looks, never how strong it is.' },
+        ],
+      },
+      techStack: ['Godot', 'iOS', 'Android', 'Vercel', 'Firebase'],
+      deliverables: ['Game design', 'Art & effects', 'Mobile client', 'Ranked PvP server', 'Sound & voice-over', 'Store releases'],
+      links: [
+        { label: 'Game page', url: '/works/battletank/', description: 'Trailer, screenshots, odds and policies' },
+        { label: 'Trailer', url: 'https://www.youtube.com/watch?v=ZWecya1Reuc', description: 'Watch on YouTube' },
+      ],
+    },
+    // The detail lives on the game page (page), so only what cards and links read is filled in.
+    game: {
+      genre: 'Twin-stick tank action',
+      platforms: ['iOS', 'Android'],
+      players: 'Single player · Ranked 2v2',
+      buildLabel: 'VER 0.9.0',
+      pitch: '녹슨 군단이 보급로를 집어삼켰다. 남은 건 07호 전차 한 대.',
+      stats: [
+        { value: '35', label: 'Operations' },
+        { value: '7', label: 'Bosses' },
+        { value: '12', label: 'Hulls' },
+      ],
+      features: [],
+      units: [],
+      operations: [],
+      roadmap: [],
+      playUrl: '/works/battletank/',
+      stores: [],
+    },
+  },
 ];
 
 // ─── Helpers ───
+
+/** Where a card or link opens the project on this site. */
+export function getProjectPath(project: WorkProject): string {
+  return project.page ?? `/works/${project.id}`;
+}
 
 export function getProjectById(id: string): WorkProject | undefined {
   return worksData.find((p) => p.id === id);

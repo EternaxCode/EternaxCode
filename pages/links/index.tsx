@@ -21,7 +21,7 @@ const SITE_URL = 'https://eternaxcode.com';
 const CONTACT_EMAIL = 'eternaxcode@gmail.com';
 
 /** Display order for the bio page; anything not listed follows in data order. */
-const ORDER = ['bbang-eonjeon', 'memoire', 'sajulens', 'lottopuri', 'jejuway', 'ddubakehouse'];
+const ORDER = ['bbang-eonjeon', 'battletank', 'memoire', 'sajulens', 'lottopuri', 'jejuway', 'ddubakehouse'];
 
 function orderedProjects(): WorkProject[] {
   const rank = (p: WorkProject) => {
@@ -34,19 +34,22 @@ function orderedProjects(): WorkProject[] {
 }
 
 function ctaLabel(project: WorkProject): string {
+  if (getProjectStatus(project) === 'in-review') return 'Coming soon';
   if (project.type === 'game') return 'Play now';
   if (project.type === 'app') return 'Download';
   return 'Visit site';
 }
 
-/** External product URL when one exists, otherwise the case study on this site. */
+/** The project's own page on this site, else its external product URL, else the case study. */
 function primaryHref(project: WorkProject): { href: string; external: boolean } {
+  if (project.page) return { href: project.page, external: false };
   if (project.url && project.url !== '#') return { href: project.url, external: true };
   return { href: `/works/${project.id}`, external: false };
 }
 
 const statusDot: Record<string, string> = {
   live: 'bg-emerald-400',
+  'in-review': 'bg-sky-400',
   'in-development': 'bg-amber-400',
   discontinued: 'bg-red-400',
 };
@@ -86,8 +89,9 @@ function ProductRow({ project }: { project: WorkProject }) {
     </motion.div>
   );
 
-  return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="block">
+  // a hand-built page under public/ is not a Next route, so a plain link loads it
+  return external || project.page ? (
+    <a href={href} {...(external && { target: '_blank', rel: 'noopener noreferrer' })} className="block">
       {inner}
     </a>
   ) : (
@@ -204,7 +208,7 @@ export default function LinksPage() {
   const [featured, ...rest] = projects;
   const title = 'EternaxCode — Products & Links';
   const description =
-    'Games, apps, and web services designed, built, and operated by EternaxCode. Play 빵어전, download Memoire, and explore our work.';
+    'Games, apps, and web services designed, built, and operated by EternaxCode. Play 빵어전, meet 배틀탱크, download Memoire, and explore our work.';
 
   return (
     <>

@@ -30,6 +30,7 @@ import type { WorkProject } from '@/lib/worksData';
 
 const statusBadgeClass = {
   live: '',
+  'in-review': 'bg-sky-500/20 border-sky-300/40 text-sky-100',
   'in-development': 'bg-amber-400/20 border-amber-300/40 text-amber-100',
   discontinued: 'bg-red-500/20 border-red-300/40 text-red-100',
 } as const;
@@ -454,7 +455,8 @@ export default function WorkCaseStudy({ project }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = worksData.map((p) => ({ params: { id: p.id } }));
+  // a project with its own page under public/ gets no generated detail (it would collide)
+  const paths = worksData.filter((p) => !p.page).map((p) => ({ params: { id: p.id } }));
   return { paths, fallback: false };
 };
 
