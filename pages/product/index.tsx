@@ -225,7 +225,7 @@ export default function Product() {
                     NEW ▶
                   </span>
                 </Link>
-                {/* 배틀탱크 — our second game, in store review (its own page under public/) */}
+                {/* 배틀탱크 — our second game, on Google Play (its own page under public/) */}
                 <a
                   href="/works/battletank/"
                   className="group inline-flex items-center gap-3 px-4 py-2 border-2 border-sky-300/40 bg-sky-400/10 text-sky-100 hover:bg-sky-400/20 hover:border-sky-300/70 transition-colors"
@@ -234,13 +234,13 @@ export default function Product() {
                   <Gamepad2 className="w-4 h-4 text-sky-300 shrink-0" />
                   <span className="text-sm">
                     <span className="font-semibold">배틀탱크</span>
-                    <span className="text-sky-100/70"> — a tank action game, in store review</span>
+                    <span className="text-sky-100/70"> — a tank action game, now on Google Play</span>
                   </span>
                   <span
                     className="text-[9px] tracking-wider text-sky-300 group-hover:translate-x-0.5 transition-transform shrink-0"
                     style={{ fontFamily: "'Press Start 2P', monospace" }}
                   >
-                    SOON ▶
+                    PLAY ▶
                   </span>
                 </a>
               </div>

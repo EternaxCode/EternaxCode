@@ -843,15 +843,15 @@ export const worksData: WorkProject[] = [
     // generated from the game repo (tools/site_pages.py) into public/works/battletank/.
     page: '/works/battletank/',
     description:
-      'A landscape twin-stick tank action game. One tank, 07, against the rusted legion: 7 fronts, 35 operations, 7 bosses, builds that change every level-up, and ranked 2v2 squad battles. Submitted to the App Store and Google Play.',
+      'A landscape twin-stick tank action game. One tank, 07, against the rusted legion: 7 fronts, 35 operations, 7 bosses, builds that change every level-up, and ranked 2v2 squad battles. Live on Google Play, with the App Store version in review.',
     tags: ['Game', 'Tank Action', 'iOS', 'Android'],
     image: '/works/battletank.png',
     fallbackGradient: 'from-stone-900 via-orange-950 to-zinc-900',
     fallbackLabel: '배틀탱크',
     accentColor: 'rgba(245, 184, 46, 0.4)',
-    status: 'in-review',
+    status: 'live',
     statusNote:
-      'Version 0.9.0 was submitted to Google Play and the App Store on 2026-10-24. Store links go up here once both reviews pass.',
+      'Version 1.0.0 is live on Google Play. The App Store version is still in review; its link goes up here once Apple approves it.',
     subtitle: '전차 한 대로 녹슨 군단을 돌파하라 — one tank against the rusted legion.',
     heroDescription:
       '배틀탱크: 강철 돌격대 (Battle Tank: Steel Assault Corps) is EternaxCode\'s second original game. The rusted legion has swallowed the supply lines and one tank, 07, is left: drive with the left thumb, aim with the right, and let go to auto-aim. Every level-up reshapes the build, five weapons evolve at Lv5, and ranked 2v2 squad battles are judged on our own server.',
@@ -889,6 +889,7 @@ export const worksData: WorkProject[] = [
       deliverables: ['Game design', 'Art & effects', 'Mobile client', 'Ranked PvP server', 'Sound & voice-over', 'Store releases'],
       links: [
         { label: 'Game page', url: '/works/battletank/', description: 'Trailer, screenshots, odds and policies' },
+        { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.battletank', description: 'Download for Android' },
         { label: 'Trailer', url: 'https://www.youtube.com/watch?v=ZWecya1Reuc', description: 'Watch on YouTube' },
       ],
     },
@@ -897,7 +898,7 @@ export const worksData: WorkProject[] = [
       genre: 'Twin-stick tank action',
       platforms: ['iOS', 'Android'],
       players: 'Single player · Ranked 2v2',
-      buildLabel: 'VER 0.9.0',
+      buildLabel: 'VER 1.0.0',
       pitch: '녹슨 군단이 보급로를 집어삼켰다. 남은 건 07호 전차 한 대.',
       stats: [
         { value: '35', label: 'Operations' },
@@ -909,7 +910,7 @@ export const worksData: WorkProject[] = [
       operations: [],
       roadmap: [],
       playUrl: '/works/battletank/',
-      stores: [],
+      stores: [{ label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.eternaxcode.battletank' }],
     },
   },
 ];

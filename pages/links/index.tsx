@@ -208,7 +208,7 @@ export default function LinksPage() {
   const [featured, ...rest] = projects;
   const title = 'EternaxCode — Products & Links';
   const description =
-    'Games, apps, and web services designed, built, and operated by EternaxCode. Play 빵어전, meet 배틀탱크, download Memoire, and explore our work.';
+    'Games, apps, and web services designed, built, and operated by EternaxCode. Play 빵어전 and 배틀탱크, download Memoire, and explore our work.';
 
   return (
     <>
